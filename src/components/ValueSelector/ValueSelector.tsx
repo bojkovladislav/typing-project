@@ -1,3 +1,5 @@
+import { useTheme } from '../../hooks/useTheme';
+
 interface Props {
   changeOption: () => void;
   valueToCompare: string | number;
@@ -5,12 +7,17 @@ interface Props {
 }
 
 function ValueSelector({ changeOption, valueToCompare, value }: Props) {
+  const { currentTheme } = useTheme();
+
   return (
     <div
       onClick={changeOption}
-      className="cursor-pointer"
+      className="cursor-pointer text-sm"
       style={{
-        color: valueToCompare === value ? 'red' : 'green',
+        color:
+          valueToCompare === value
+            ? currentTheme.interface.selectedColor
+            : currentTheme.interface.tertiaryColor,
       }}
     >
       {value}

@@ -1,21 +1,20 @@
 import { useEffect, useState } from 'react';
 import TypingField from '../../components/TypingField/TypingField';
 import useTyping from '../../hooks/useTyping';
-import { THEMES } from '../../constants';
 import RestartButton from '../../components/RestartButton/RestartButton';
 import axios from 'axios';
 import { TextCharacter } from '../../types/typing';
+import { useTheme } from '../../hooks/useTheme';
 
 function TypingTest() {
-  const CURRENT_THEME_NUMBER = 0; // This will represent the state later, allowing users to select a specific theme from the list.
-  const currentThemeColors = THEMES[CURRENT_THEME_NUMBER];
+  const { currentTheme } = useTheme();
   const [textToDisplay, setTextToDisplay] = useState<TextCharacter[]>([]);
 
   function normalizeText(text: string) {
     return text.split('').map((letter) => ({
       value: letter,
-      currentColor: currentThemeColors.primary,
-      colors: currentThemeColors,
+      currentColor: currentTheme.text.neutral,
+      colors: currentTheme.text,
     }));
   }
 
@@ -45,7 +44,7 @@ function TypingTest() {
       prevText.map((letter) => ({
         ...letter,
         value: '',
-        currentColor: currentThemeColors.primary,
+        currentColor: currentTheme.text.neutral,
       }))
     );
 

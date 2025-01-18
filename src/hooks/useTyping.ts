@@ -46,7 +46,11 @@ export default function useTyping(
   console.log(currentLetterIndexRef.current, text.length);
 
   useEffect(() => {
-    if (currentLetterIndexRef.current >= text.length && wpmResult === null) {
+    if (
+      text.length &&
+      currentLetterIndexRef.current >= text.length &&
+      wpmResult === null
+    ) {
       const minutesElapsed = currentSecond / 60;
       const WPM = Math.floor(text.length / 5 / minutesElapsed);
 
@@ -105,7 +109,7 @@ export default function useTyping(
             ...letter,
             currentColor:
               letIndex <= startIndex && letIndex >= currentIndex
-                ? letter.colors.primary
+                ? letter.colors.neutral
                 : letter.currentColor,
           }));
 
@@ -126,13 +130,13 @@ export default function useTyping(
 
       setText((prevText) =>
         prevText.map((letter, letIndex) => {
-          const { primary, correctChar, wrongChar } = letter.colors;
+          const { correct, incorrect, neutral } = letter.colors;
           let updatedColor: string;
 
           if (key === 'Backspace') {
-            updatedColor = primary;
+            updatedColor = neutral;
           } else {
-            updatedColor = key === letter.value ? correctChar : wrongChar;
+            updatedColor = key === letter.value ? correct : incorrect;
           }
 
           if (

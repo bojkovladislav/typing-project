@@ -12,9 +12,7 @@ function App() {
   );
 
   return (
-    <div className="flex gap-16 flex-col">
-      <h2 className="text-gray-600">Test your typing skills!</h2>
-
+    <div>
       <ConfigurationBar
         currentMode={currentMode}
         setCurrentMode={setCurrentMode}

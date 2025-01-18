@@ -16,6 +16,8 @@ import { defaultOptions } from './constants';
 import ValueSelector from '../../components/ValueSelector/ValueSelector';
 import OptionToggle from '../../components/OptionToggle/OptionToggle';
 import ModeSelector from '../../components/ModeSelector/ModeSelector';
+import { useTheme } from '../../hooks/useTheme';
+import Spacer from '../../components/ui/Spacer/Spacer';
 
 interface Props {
   currentMode: Mode;
@@ -24,6 +26,7 @@ interface Props {
 
 function ConfigurationBar({ currentMode, setCurrentMode }: Props) {
   const { selectedMode, additionalOptions } = currentMode;
+  const { currentTheme } = useTheme();
 
   function getOptions() {
     return {
@@ -94,7 +97,10 @@ function ConfigurationBar({ currentMode, setCurrentMode }: Props) {
   }
 
   return (
-    <div className="flex gap-10 bg-purple-950 p-5 rounded-md">
+    <div
+      className="flex gap-5 px-3 py-2 rounded-md center-absolute top-10"
+      style={{ backgroundColor: currentTheme.interface.secondaryColor }}
+    >
       {(selectedMode === Modes.WORDS || selectedMode === Modes.TIME) && (
         <div className="flex gap-5 cursor-pointer">
           {Object.entries(options[selectedMode])
@@ -115,6 +121,8 @@ function ConfigurationBar({ currentMode, setCurrentMode }: Props) {
         </div>
       )}
 
+      {selectedMode !== Modes.QUOTE && <Spacer />}
+
       {(Object.keys(options) as Array<keyof TextModes>).map((optionName) => {
         return (
           <ModeSelector
@@ -125,6 +133,8 @@ function ConfigurationBar({ currentMode, setCurrentMode }: Props) {
           />
         );
       })}
+
+      <Spacer />
 
       {selectedMode === Modes.WORDS &&
         renderValueSelectors<Modes.WORDS, NumberOfWords[number]>(
