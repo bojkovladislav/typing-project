@@ -1,4 +1,4 @@
-import { Modes, TextModes } from '../../../types/configurationBar';
+import { Modes, TextModes } from '../../types/configurationBar';
 
 interface Props {
   optionName: keyof TextModes;

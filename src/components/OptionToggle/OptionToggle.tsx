@@ -1,5 +1,5 @@
-import { TextModes, WordsMode } from '../../../types/configurationBar';
-import { Modes } from '../../../types/enums';
+import { TextModes, WordsMode } from '../../types/configurationBar';
+import { Modes } from '../../types/enums';
 
 interface Props {
   name: string;

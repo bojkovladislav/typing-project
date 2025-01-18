@@ -12,10 +12,10 @@ import {
   WordsMode,
 } from '../../types/configurationBar';
 import { setLocalStorageItem } from '../../utils/localStorage';
-import OptionToggle from './components/OptionToggle';
-import ModeSelector from './components/ModeSelector';
-import ValueSelector from './components/ValueSelector';
 import { defaultOptions } from './constants';
+import ValueSelector from '../../components/ValueSelector/ValueSelector';
+import OptionToggle from '../../components/OptionToggle/OptionToggle';
+import ModeSelector from '../../components/ModeSelector/ModeSelector';
 
 interface Props {
   currentMode: Mode;
