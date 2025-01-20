@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { AnimatePresence, motion } from 'motion/react';
 import { SetState } from '../../types/common';
 import {
   Mode,
@@ -96,19 +97,48 @@ function ConfigurationBar({ currentMode, setCurrentMode }: Props) {
     );
   }
 
-  return (
-    <div
-      className="flex gap-5 px-3 py-2 rounded-md center-absolute top-10"
-      style={{ backgroundColor: currentTheme.interface.secondaryColor }}
-    >
-      {(selectedMode === Modes.WORDS || selectedMode === Modes.TIME) && (
-        <div className="flex gap-5 cursor-pointer">
-          {Object.entries(options[selectedMode])
-            .filter((defaultOption) => typeof defaultOption[1] === 'boolean')
-            .map((defaultOption) => {
-              const [name, value] = defaultOption;
+  const isVisible = selectedMode === Modes.TIME || selectedMode === Modes.WORDS;
 
-              return (
+  return (
+    <AnimatePresence>
+      <motion.div
+        className="px-3 py-2 grid rounded-md center-absolute top-10"
+        style={{ backgroundColor: currentTheme.interface.secondaryColor }}
+        initial={{ gridTemplateColumns: '0fr 1fr 1fr 1fr 1fr' }} // Start with 3 columns
+        animate={{
+          gridTemplateColumns: isVisible
+            ? '0fr minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1fr)' // 4 columns when visible
+            : '0fr minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1fr)', // 3 columns when not visible
+        }}
+        transition={{
+          gridTemplateColumns: { duration: 0.5, ease: 'easeInOut' }, // Smooth transition
+        }}
+      >
+        {isVisible && (
+          <motion.div
+            className="flex gap-5 mr-5 cursor-pointer"
+            initial={{ opacity: 0 }}
+            animate={{
+              opacity: isVisible ? 1 : 0,
+            }}
+            exit={{
+              opacity: 0,
+              transition: {
+                opacity: {
+                  duration: 0.1,
+                },
+              },
+            }}
+            transition={{
+              opacity: {
+                duration: 0.3,
+                delay: 0.3,
+              },
+            }}
+          >
+            {Object.entries(options[selectedMode])
+              .filter(([key, value]) => typeof value === 'boolean')
+              .map(([name, value]) => (
                 <OptionToggle
                   key={name}
                   name={name}
@@ -116,62 +146,110 @@ function ConfigurationBar({ currentMode, setCurrentMode }: Props) {
                   selectedMode={selectedMode}
                   changeOption={changeOption}
                 />
-              );
-            })}
-        </div>
-      )}
-
-      {selectedMode !== Modes.QUOTE && <Spacer />}
-
-      {(Object.keys(options) as Array<keyof TextModes>).map((optionName) => {
-        return (
-          <ModeSelector
-            key={optionName}
-            optionName={optionName}
-            changeMode={changeMode}
-            selectedMode={selectedMode}
-          />
-        );
-      })}
-
-      <Spacer />
-
-      {selectedMode === Modes.WORDS &&
-        renderValueSelectors<Modes.WORDS, NumberOfWords[number]>(
-          'lengthToSelect',
-          (additionalOptions as WordsMode).selectedNumberOfWords,
-          (value) =>
-            changeOption<Modes.WORDS, NumberOfWords[number]>(
-              Modes.WORDS,
-              'selectedNumberOfWords',
-              value
-            )
+              ))}
+          </motion.div>
         )}
 
-      {selectedMode === Modes.TIME &&
-        renderValueSelectors<Modes.TIME, SecondOptions[number]>(
-          'secondsToChooseFrom',
-          (additionalOptions as TimeMode).selectedTimeLimit,
-          (value) =>
-            changeOption<Modes.TIME, SecondOptions[number]>(
-              Modes.TIME,
-              'selectedTimeLimit',
-              value
-            )
-        )}
+        {/* <AnimatePresence>
+        {isVisible && (
+          <motion.div
+            className="flex gap-5 mr-5 cursor-pointer"
+            initial={{ width: 0, opacity: 0 }}
+            animate={{
+              width: isVisible ? 'auto' : 0,
+              opacity: isVisible ? 1 : 0,
+            }}
+            exit={{
+              width: 0,
+              opacity: 0,
+              marginRight: 0,
+              transition: {
+                opacity: {
+                  duration: 0.1,
+                },
+                width: {
+                  duration: 5,
+                },
+              },
+            }}
+            transition={{
+              width: {
+                duration: 0.5,
+              },
 
-      {selectedMode === Modes.QUOTE &&
-        renderValueSelectors<Modes.QUOTE, QuoteLength[number]>(
-          'form',
-          (additionalOptions as QuoteMode).selectedQuoteLength,
-          (value) =>
-            changeOption<Modes.QUOTE, QuoteLength[number]>(
-              Modes.QUOTE,
-              'selectedQuoteLength',
-              value
-            )
+              opacity: {
+                duration: 0.3,
+                delay: 0.3,
+              },
+            }}
+          >
+            {Object.entries(options[selectedMode])
+              .filter(([key, value]) => typeof value === 'boolean')
+              .map(([name, value]) => (
+                <OptionToggle
+                  key={name}
+                  name={name}
+                  value={value}
+                  selectedMode={selectedMode}
+                  changeOption={changeOption}
+                />
+              ))}
+
+            <Spacer />
+          </motion.div>
         )}
-    </div>
+      </AnimatePresence> */}
+
+        {(Object.keys(options) as Array<keyof TextModes>).map((optionName) => {
+          return (
+            <ModeSelector
+              key={optionName}
+              optionName={optionName}
+              changeMode={changeMode}
+              selectedMode={selectedMode}
+            />
+          );
+        })}
+
+        {/* <Spacer /> */}
+
+        {selectedMode === Modes.WORDS &&
+          renderValueSelectors<Modes.WORDS, NumberOfWords[number]>(
+            'lengthToSelect',
+            (additionalOptions as WordsMode).selectedNumberOfWords,
+            (value) =>
+              changeOption<Modes.WORDS, NumberOfWords[number]>(
+                Modes.WORDS,
+                'selectedNumberOfWords',
+                value
+              )
+          )}
+
+        {selectedMode === Modes.TIME &&
+          renderValueSelectors<Modes.TIME, SecondOptions[number]>(
+            'secondsToChooseFrom',
+            (additionalOptions as TimeMode).selectedTimeLimit,
+            (value) =>
+              changeOption<Modes.TIME, SecondOptions[number]>(
+                Modes.TIME,
+                'selectedTimeLimit',
+                value
+              )
+          )}
+
+        {selectedMode === Modes.QUOTE &&
+          renderValueSelectors<Modes.QUOTE, QuoteLength[number]>(
+            'form',
+            (additionalOptions as QuoteMode).selectedQuoteLength,
+            (value) =>
+              changeOption<Modes.QUOTE, QuoteLength[number]>(
+                Modes.QUOTE,
+                'selectedQuoteLength',
+                value
+              )
+          )}
+      </motion.div>
+    </AnimatePresence>
   );
 }
 
