@@ -18,7 +18,6 @@ import ValueSelector from '../../components/ValueSelector/ValueSelector';
 import OptionToggle from '../../components/OptionToggle/OptionToggle';
 import ModeSelector from '../../components/ModeSelector/ModeSelector';
 import { useTheme } from '../../hooks/useTheme';
-import Spacer from '../../components/ui/Spacer/Spacer';
 
 interface Props {
   currentMode: Mode;
@@ -103,16 +102,19 @@ function ConfigurationBar({ currentMode, setCurrentMode }: Props) {
     <AnimatePresence>
       <motion.div
         className="px-3 py-2 grid rounded-md center-absolute top-10"
-        style={{ backgroundColor: currentTheme.interface.secondaryColor }}
-        initial={{ gridTemplateColumns: '0fr 1fr 1fr 1fr 1fr' }} // Start with 3 columns
-        animate={{
-          gridTemplateColumns: isVisible
-            ? '0fr minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1fr)' // 4 columns when visible
-            : '0fr minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1fr)', // 3 columns when not visible
+        style={{
+          backgroundColor: currentTheme.interface.secondaryColor,
+
+          gridTemplateColumns: isVisible ? '1fr 1fr 1fr' : '1fr 1fr',
         }}
+        // initial={{ gridTemplateColumns: '1fr 1fr 1fr' }} // Start with 3 columns
+        // animate={{
+        //   gridTemplateColumns: isVisible ? '1fr 1fr 1fr' : '1fr 1fr',
+        // }}
         transition={{
           gridTemplateColumns: { duration: 0.5, ease: 'easeInOut' }, // Smooth transition
         }}
+        layout
       >
         {isVisible && (
           <motion.div
@@ -200,16 +202,20 @@ function ConfigurationBar({ currentMode, setCurrentMode }: Props) {
         )}
       </AnimatePresence> */}
 
-        {(Object.keys(options) as Array<keyof TextModes>).map((optionName) => {
-          return (
-            <ModeSelector
-              key={optionName}
-              optionName={optionName}
-              changeMode={changeMode}
-              selectedMode={selectedMode}
-            />
-          );
-        })}
+        <div className="flex gap-2">
+          {(Object.keys(options) as Array<keyof TextModes>).map(
+            (optionName) => {
+              return (
+                <ModeSelector
+                  key={optionName}
+                  optionName={optionName}
+                  changeMode={changeMode}
+                  selectedMode={selectedMode}
+                />
+              );
+            }
+          )}
+        </div>
 
         {/* <Spacer /> */}
 
