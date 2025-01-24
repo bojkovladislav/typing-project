@@ -18,7 +18,7 @@ function App() {
         setCurrentMode={setCurrentMode}
       />
 
-      <TypingTest />
+      <TypingTest currentMode={currentMode} setCurrentMode={setCurrentMode} />
     </div>
   );
 }

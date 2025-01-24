@@ -54,10 +54,6 @@ export default function useTyping(
       const minutesElapsed = currentSecond / 60;
       const WPM = Math.floor(text.length / 5 / minutesElapsed);
 
-      console.log('test');
-
-      // console.log(`your WPM IS ${WPM}`);
-
       currentLetterIndexRef.current = 0;
 
       setWpmResult(WPM);
@@ -66,49 +62,62 @@ export default function useTyping(
     }
   }, [currentLetterIndexRef.current]);
 
-  // console.log(currentLetterIndexRef.current, text.length - 1);
+  function findStartIndex() {
+    const currentIndex = currentLetterIndexRef.current;
+    const stopCharacters = [' ', ',', '.'];
+    let startIndex = currentIndex - 1;
 
-  // console.log('current second', currentSecond);
+    if (currentIndex === 0) return 0;
+
+    if (stopCharacters.includes(text[startIndex].value)) {
+      startIndex--;
+    }
+
+    while (
+      startIndex >= 0 &&
+      !stopCharacters.includes(text[startIndex].value)
+    ) {
+      startIndex--;
+    }
+
+    return Math.max(startIndex + 1, 0);
+  }
+
+  function isTheWordCorrect(startIndex: number, endIndex: number) {
+    const currentWord = text.slice(startIndex, endIndex);
+
+    return currentWord.every(
+      (letter) => letter.currentColor === letter.colors.correct
+    );
+  }
 
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
-      // console.log('before: ', wpmResult);
-
-      // if (wpmResult !== null) return;
-
-      // console.log('after:  ', wpmResult);
-
       const key = event.key;
+
+      let updatedIndex = currentLetterIndexRef.current;
 
       if (KeysToIgnore.includes(key)) return;
 
       if (event.ctrlKey && key === 'Backspace') {
-        const startIndex = currentLetterIndexRef.current;
-        let currentIndex = startIndex - 1;
-        const stopCharacters = [' ', ',', '.'];
+        const startIndex = findStartIndex();
 
-        if (startIndex === 0) return;
+        if (
+          text[updatedIndex].value === ' ' ||
+          text[updatedIndex - 1].value === ' '
+        ) {
+          const theWordIsCorrect = isTheWordCorrect(startIndex, updatedIndex);
+
+          if (theWordIsCorrect) return;
+        }
 
         setText((prevText) => {
-          if (stopCharacters.includes(prevText[currentIndex].value)) {
-            currentIndex--;
-          }
-
-          while (
-            currentIndex >= 0 &&
-            !stopCharacters.includes(prevText[currentIndex].value)
-          ) {
-            currentIndex--;
-          }
-
-          currentIndex = Math.max(currentIndex + 1, 0);
-
-          currentLetterIndexRef.current = currentIndex;
+          currentLetterIndexRef.current = startIndex;
 
           const updatedText = prevText.map((letter, letIndex) => ({
             ...letter,
             currentColor:
-              letIndex <= startIndex && letIndex >= currentIndex
+              letIndex <= updatedIndex && letIndex >= startIndex
                 ? letter.colors.neutral
                 : letter.currentColor,
           }));
@@ -120,13 +129,20 @@ export default function useTyping(
       }
 
       if (key === 'Backspace') {
-        currentLetterIndexRef.current = Math.max(
-          currentLetterIndexRef.current - 1,
-          0
-        );
+        updatedIndex = Math.max(updatedIndex - 1, 0);
+
+        if (text[updatedIndex].value === ' ') {
+          const startIndex = findStartIndex();
+
+          const theWordIsCorrect = isTheWordCorrect(startIndex, updatedIndex);
+
+          if (theWordIsCorrect) return;
+        }
       } else {
-        currentLetterIndexRef.current += 1;
+        updatedIndex++;
       }
+
+      currentLetterIndexRef.current = updatedIndex;
 
       setText((prevText) =>
         prevText.map((letter, letIndex) => {
@@ -140,10 +156,7 @@ export default function useTyping(
           }
 
           if (
-            letIndex ===
-            (key === 'Backspace'
-              ? currentLetterIndexRef.current
-              : currentLetterIndexRef.current - 1)
+            letIndex === (key === 'Backspace' ? updatedIndex : updatedIndex - 1)
           ) {
             return {
               ...letter,
@@ -161,7 +174,7 @@ export default function useTyping(
     return () => {
       window.removeEventListener('keydown', handleKeyDown);
     };
-  }, [setText]);
+  }, [text, setText]);
 
   return [currentLetterIndexRef, wpmResult, restart];
 }
