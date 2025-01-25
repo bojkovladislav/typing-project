@@ -2,11 +2,12 @@ interface ButtonProps {
   text?: string;
   action: () => void;
   customStyles?: string;
+  tabIndex: number;
 }
 
-function Button({ text, action, customStyles }: ButtonProps) {
+function Button({ text, action, customStyles, tabIndex }: ButtonProps) {
   return (
-    <button onClick={action} className={customStyles}>
+    <button onClick={action} className={customStyles} tabIndex={tabIndex}>
       {text}
     </button>
   );

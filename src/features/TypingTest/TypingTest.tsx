@@ -87,8 +87,6 @@ function TypingTest({ currentMode, setCurrentMode }: Props) {
     }
   }, [currentMode]);
 
-  console.log(wpmResult);
-
   return (
     <div className="flex flex-col gap-10 items-center">
       {wpmResult !== null || timer === 0 ? (
@@ -103,7 +101,7 @@ function TypingTest({ currentMode, setCurrentMode }: Props) {
         />
       )}
 
-      <RestartButton action={restartTest} />
+      <RestartButton action={restartTest} tabIndex={1} />
     </div>
   );
 }
