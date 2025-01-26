@@ -8,7 +8,7 @@ import {
 export function useTheme() {
   function getTheme() {
     const themeFromLocalStorage = getLocalStorageItem('theme');
-    const defaultTheme = THEMES[1];
+    const defaultTheme = THEMES[2];
 
     if (!themeFromLocalStorage) {
       setLocalStorageItem('theme', defaultTheme);

@@ -1,9 +1,17 @@
 import FilledText from '../../components/FilledText/FilledText';
+import { useTheme } from '../../hooks/useTheme';
 
 function Hints() {
+  const theme = useTheme();
+
   return (
     <div className="bottom-10 center-absolute">
-      <div className="flex gap-2 text-[13px] justify-center items-center">
+      <div
+        className="flex gap-2 text-[13px] justify-center items-center"
+        style={{
+          color: theme.currentTheme.text.neutral,
+        }}
+      >
         <FilledText content="Tab" />
         <p>+</p>
         <FilledText content="Enter" />

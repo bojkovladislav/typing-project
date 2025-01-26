@@ -5,39 +5,37 @@ export const THEMES = [
     name: 'Light',
     interface: {
       primaryColor: '#ffffff',
-      secondaryColor: '#f5f5f5',
-      tertiaryColor: '#e0e0e0',
-      selectedColor: '#81c784',
+      secondaryColor: '#eaeef2',
+      tertiaryColor: '#586e75',
+      selectedColor: '#5cd3a3',
     },
     text: {
-      neutral: '#000000',
+      neutral: '#2d3436',
       correct: '#4caf50',
-      incorrect: '#f44336',
+      incorrect: '#e74c3c',
     },
   },
-
   {
     name: 'Dark',
     interface: {
-      primaryColor: '#121212',
-      secondaryColor: '#073642',
-      tertiaryColor: '#586e75',
-      selectedColor: '#81c784',
+      primaryColor: '#181a1b',
+      secondaryColor: '#1d1f20',
+      tertiaryColor: '#d1d5da',
+      selectedColor: '#5cd3a3',
     },
     text: {
-      neutral: '#ffffff',
-      correct: '#81c784',
+      neutral: '#d1d5da',
+      correct: '#5cd3a3',
       incorrect: '#e57373',
     },
   },
-
   {
     name: 'Solarized',
     interface: {
       primaryColor: '#002b36',
       secondaryColor: '#073642',
-      selectedColor: '#81c784',
       tertiaryColor: '#586e75',
+      selectedColor: '#5cd3a3',
     },
     text: {
       neutral: '#839496',
