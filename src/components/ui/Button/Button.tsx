@@ -1,3 +1,5 @@
+import { useTheme } from '../../../hooks/useTheme';
+
 interface ButtonProps {
   text?: string;
   action: () => void;
@@ -6,8 +8,15 @@ interface ButtonProps {
 }
 
 function Button({ text, action, customStyles, tabIndex }: ButtonProps) {
+  const theme = useTheme();
+
   return (
-    <button onClick={action} className={customStyles} tabIndex={tabIndex}>
+    <button
+      onClick={action}
+      style={{ backgroundColor: theme.currentTheme.interface.secondaryColor }}
+      className={customStyles}
+      tabIndex={tabIndex}
+    >
       {text}
     </button>
   );
