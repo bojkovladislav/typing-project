@@ -12,6 +12,7 @@ function RestartButton({ action, tabIndex }: RestartButtonProps) {
       text="Restart test"
       customStyles="w-[150px]"
       tabIndex={tabIndex}
+      fill
     />
   );
 }

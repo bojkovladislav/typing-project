@@ -6,9 +6,9 @@ import { defaultMode } from './constants';
 import ConfigurationBar from './features/ConfigurationBar/ConfigurationBar';
 import { useState } from 'react';
 import Hints from './features/Hints/Hints';
-import ChooseTheme from './components/ChooseTheme/ChooseTheme';
 import Modal from './components/ui/Modal/Modal';
 import ThemesSelection from './features/ThemesSelection/ThemesSelection';
+import ChooseTheme from './components/ChooseTheme/ChooseTheme';
 
 function App() {
   const [currentMode, setCurrentMode] = useState<Mode>(
@@ -27,13 +27,11 @@ function App() {
 
       <Hints />
 
-      <ChooseTheme />
-
       <Modal
         open={themeModalOpen}
         handleClose={() => setThemeModalOpen(false)}
-        handleOpen={() => setThemeModalOpen(true)}
         title="Theme Selection"
+        triggerButton={<ChooseTheme action={() => setThemeModalOpen(true)} />}
       >
         <ThemesSelection />
       </Modal>

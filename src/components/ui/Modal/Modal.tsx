@@ -1,13 +1,14 @@
 import { ReactNode } from 'react';
-import { Button, Modal as AntdModal } from 'antd';
+import { Modal as AntdModal } from 'antd';
 
 interface Props {
   loading?: boolean;
-  handleOpen: () => void;
+
   handleClose: () => void;
   open: boolean;
   title: string;
   children: ReactNode;
+  triggerButton: ReactNode;
 }
 
 function Modal({
@@ -15,14 +16,14 @@ function Modal({
   title,
   open,
   handleClose,
-  handleOpen,
+
+  triggerButton,
   children,
 }: Props) {
   return (
     <>
-      <Button type="primary" onClick={handleOpen}>
-        Open Modal
-      </Button>
+      {triggerButton}
+
       <AntdModal
         title={<p>{title}</p>}
         loading={loading}

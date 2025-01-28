@@ -1,9 +1,7 @@
-import { Avatar, Divider, List as AntdList, Skeleton } from 'antd';
+import { List as AntdList } from 'antd';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import { useTheme } from '../../hooks/useTheme';
 import { THEMES } from '../../constants';
-
-interface Props {}
 
 function ThemesSelection() {
   const theme = useTheme();
@@ -21,6 +19,9 @@ function ThemesSelection() {
       <InfiniteScroll
         dataLength={THEMES.length}
         scrollableTarget="scrollableDiv"
+        next={() => {}}
+        hasMore={THEMES.length < 50}
+        loader=""
       >
         <AntdList
           dataSource={THEMES}
@@ -28,11 +29,29 @@ function ThemesSelection() {
             <AntdList.Item key={item.name}>
               <AntdList.Item.Meta title={<p>{item.name}</p>} />
               <div
-                className="p-3 rounded-md "
+                className="p-3 rounded-md flex gap-2"
                 style={{
                   backgroundColor: theme.currentTheme.interface.primaryColor,
                 }}
-              ></div>
+              >
+                {Object.keys(item.interface)
+                  .slice(1)
+                  .map((colorName) => {
+                    return (
+                      <div
+                        className="rounded-full"
+                        style={{
+                          backgroundColor:
+                            item.interface[
+                              colorName as keyof typeof item.interface
+                            ],
+                          width: '10px',
+                          height: '10px',
+                        }}
+                      />
+                    );
+                  })}
+              </div>
             </AntdList.Item>
           )}
         />

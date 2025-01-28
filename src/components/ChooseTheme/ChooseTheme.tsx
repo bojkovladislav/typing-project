@@ -1,11 +1,19 @@
+import { FormatPainterOutlined } from '@ant-design/icons';
 import Button from '../ui/Button/Button';
 
-function ChooseTheme() {
+interface Props {
+  action: () => void;
+}
+
+function ChooseTheme({ action }: Props) {
   return (
     <Button
       text="themes"
-      action={() => console.log('open modal')}
+      customStyles="text-sm outline-none border-none absolute bottom-10 right-10"
+      action={action}
       tabIndex={2}
+      icon={<FormatPainterOutlined />}
+      iconPosition="end"
     />
   );
 }

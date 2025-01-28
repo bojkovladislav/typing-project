@@ -1,3 +1,4 @@
+import { ReactNode } from 'react';
 import { useTheme } from '../../../hooks/useTheme';
 
 interface ButtonProps {
@@ -5,19 +6,43 @@ interface ButtonProps {
   action: () => void;
   customStyles?: string;
   tabIndex: number;
+  fill?: boolean;
+  icon?: ReactNode;
+  iconPosition?: 'start' | 'end';
 }
 
-function Button({ text, action, customStyles, tabIndex }: ButtonProps) {
+function Button({
+  text,
+  fill,
+  action,
+  customStyles,
+  tabIndex,
+  iconPosition = 'start',
+  icon,
+}: ButtonProps) {
   const theme = useTheme();
 
   return (
     <button
       onClick={action}
-      style={{ backgroundColor: theme.currentTheme.interface.secondaryColor }}
+      style={{
+        backgroundColor: fill
+          ? theme.currentTheme.interface.secondaryColor
+          : 'transparent',
+      }}
       className={customStyles}
       tabIndex={tabIndex}
     >
-      {text}
+      <div
+        className="flex gap-2"
+        style={{
+          flexDirection: iconPosition === 'start' ? 'row' : 'row-reverse',
+        }}
+      >
+        {icon && icon}
+
+        <p>{text}</p>
+      </div>
     </button>
   );
 }
