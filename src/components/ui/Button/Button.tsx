@@ -24,6 +24,7 @@ function Button({
 
   return (
     <button
+      onKeyDown={(e) => e.preventDefault()}
       onClick={action}
       style={{
         backgroundColor: fill
