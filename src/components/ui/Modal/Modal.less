@@ -1,0 +1,53 @@
+.custom-modal {
+  --modal-bg-color: var(--modal-bg-color, #000);
+  --modal-secondary-bg-color: var(--modal-secondary-bg-color, #222);
+
+  .ant-modal-content {
+    background-color: var(--modal-bg-color);
+    margin: 0;
+    padding: 0;
+  }
+
+  .ant-list-item {
+    cursor: pointer;
+    width: 100%;
+    padding: 10px 15px;
+    transition: background-color 0.1s ease;
+
+    &:hover {
+      background-color: var(--modal-secondary-bg-color);
+    }
+  }
+
+  .ant-list-item-meta-title,
+  .ant-modal-title {
+    p {
+      color: white;
+    }
+  }
+
+  .ant-modal-title {
+    p {
+      background-color: var(--modal-bg-color);
+      padding: 20px 15px;
+    }
+  }
+
+  .ant-select-selection {
+    max-height: 51px;
+    overflow: auto;
+  }
+
+  .ant-modal-close-icon {
+    color: white;
+  }
+
+  #scrollableDiv {
+    border: none !important;
+    padding: 0 !important;
+  }
+
+  .ant-modal-footer {
+    display: none;
+  }
+}

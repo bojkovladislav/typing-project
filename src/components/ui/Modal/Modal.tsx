@@ -1,5 +1,7 @@
 import { ReactNode } from 'react';
 import { Modal as AntdModal } from 'antd';
+import './Modal.less';
+import { useTheme } from '../../../hooks/useTheme';
 
 interface Props {
   loading?: boolean;
@@ -20,6 +22,8 @@ function Modal({
   triggerButton,
   children,
 }: Props) {
+  const theme = useTheme();
+
   return (
     <>
       {triggerButton}
@@ -27,6 +31,14 @@ function Modal({
       <AntdModal
         title={<p>{title}</p>}
         loading={loading}
+        className="custom-modal"
+        style={
+          {
+            '--modal-bg-color': theme.currentTheme.interface.secondaryColor,
+            '--modal-secondary-bg-color':
+              theme.currentTheme.interface.tertiaryColor,
+          } as React.CSSProperties
+        }
         open={open}
         onCancel={handleClose}
       >

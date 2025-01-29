@@ -9,9 +9,9 @@ function ChooseTheme({ action }: Props) {
   return (
     <Button
       text="themes"
-      customStyles="text-sm outline-none border-none absolute bottom-10 right-10"
+      customStyles="text-sm outline-none border-none absolute bottom-10 right-10 focus:ring-0 focus:outline-none"
       action={action}
-      tabIndex={2}
+      tabIndex={-1}
       icon={<FormatPainterOutlined />}
       iconPosition="end"
     />

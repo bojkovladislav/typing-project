@@ -5,7 +5,7 @@ interface ButtonProps {
   text?: string;
   action: () => void;
   customStyles?: string;
-  tabIndex: number;
+  tabIndex?: number;
   fill?: boolean;
   icon?: ReactNode;
   iconPosition?: 'start' | 'end';
@@ -27,22 +27,26 @@ function Button({
       onClick={action}
       style={{
         backgroundColor: fill
-          ? theme.currentTheme.interface.secondaryColor
+          ? theme.currentTheme.interface.selectedColor
           : 'transparent',
       }}
       className={customStyles}
       tabIndex={tabIndex}
     >
-      <div
-        className="flex gap-2"
-        style={{
-          flexDirection: iconPosition === 'start' ? 'row' : 'row-reverse',
-        }}
-      >
-        {icon && icon}
+      {icon ? (
+        <div
+          className="flex gap-2"
+          style={{
+            flexDirection: iconPosition === 'start' ? 'row' : 'row-reverse',
+          }}
+        >
+          {icon}
 
+          <p>{text}</p>
+        </div>
+      ) : (
         <p>{text}</p>
-      </div>
+      )}
     </button>
   );
 }
