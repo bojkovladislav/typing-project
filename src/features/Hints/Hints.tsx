@@ -2,14 +2,16 @@ import FilledText from '../../components/FilledText/FilledText';
 import { useTheme } from '../../hooks/useTheme';
 
 function Hints() {
-  const theme = useTheme();
+  const { currentTheme } = useTheme();
+
+  console.log(currentTheme + ' has changed');
 
   return (
     <div className="bottom-10 center-absolute">
       <div
         className="flex gap-2 text-[13px] justify-center items-center"
         style={{
-          color: theme.currentTheme.text.neutral,
+          color: currentTheme.text.neutral,
         }}
       >
         <FilledText content="Tab" />

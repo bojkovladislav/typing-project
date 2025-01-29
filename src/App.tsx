@@ -9,6 +9,7 @@ import Hints from './features/Hints/Hints';
 import Modal from './components/ui/Modal/Modal';
 import ThemesSelection from './features/ThemesSelection/ThemesSelection';
 import ChooseTheme from './components/ChooseTheme/ChooseTheme';
+import { ThemeProvider } from './contexts/ThemeContext';
 
 function App() {
   const [currentMode, setCurrentMode] = useState<Mode>(
@@ -17,7 +18,7 @@ function App() {
   const [themeModalOpen, setThemeModalOpen] = useState(false);
 
   return (
-    <div>
+    <ThemeProvider>
       <ConfigurationBar
         currentMode={currentMode}
         setCurrentMode={setCurrentMode}
@@ -35,7 +36,7 @@ function App() {
       >
         <ThemesSelection />
       </Modal>
-    </div>
+    </ThemeProvider>
   );
 }
 

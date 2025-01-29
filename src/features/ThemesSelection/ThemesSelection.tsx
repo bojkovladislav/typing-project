@@ -4,7 +4,11 @@ import { useTheme } from '../../hooks/useTheme';
 import { THEMES } from '../../constants';
 
 function ThemesSelection() {
-  const theme = useTheme();
+  const { changeTheme } = useTheme();
+
+  function handleThemeSwitch(newTheme: (typeof THEMES)[number]) {
+    changeTheme(newTheme);
+  }
 
   return (
     <div
@@ -26,12 +30,15 @@ function ThemesSelection() {
         <AntdList
           dataSource={THEMES}
           renderItem={(item) => (
-            <AntdList.Item key={item.name}>
+            <AntdList.Item
+              key={item.name}
+              onClick={() => handleThemeSwitch(item)}
+            >
               <AntdList.Item.Meta title={<p>{item.name}</p>} />
               <div
                 className="p-3 rounded-md flex gap-2"
                 style={{
-                  backgroundColor: theme.currentTheme.interface.primaryColor,
+                  backgroundColor: item.interface.primaryColor,
                 }}
               >
                 {Object.keys(item.interface)

@@ -101,7 +101,7 @@ function TypingTest({ currentMode, setCurrentMode }: Props) {
         />
       )}
 
-      <RestartButton action={restartTest} tabIndex={1} />
+      <RestartButton action={restartTest} tabIndex={0} />
     </div>
   );
 }

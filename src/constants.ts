@@ -1,31 +1,32 @@
 import { Mode } from './types/configurationBar';
 import { Modes } from './types/enums';
+
 export const THEMES = [
   {
     name: 'Light',
     interface: {
       primaryColor: '#ffffff',
-      secondaryColor: '#eaeef2',
-      tertiaryColor: '#586e75',
-      selectedColor: '#5cd3a3',
+      secondaryColor: '#f2f3f5',
+      tertiaryColor: '#c5c8cc',
+      selectedColor: '#4bd4a6',
     },
     text: {
-      neutral: '#2d3436',
-      correct: '#4caf50',
+      neutral: '#2d2f34',
+      correct: '#27ae60',
       incorrect: '#e74c3c',
     },
   },
   {
     name: 'Dark',
     interface: {
-      primaryColor: '#181a1b',
-      secondaryColor: '#1d1f20',
-      tertiaryColor: '#d1d5da',
-      selectedColor: '#5cd3a3',
+      primaryColor: '#0f111a',
+      secondaryColor: '#181a1f',
+      tertiaryColor: '#c7cbd1',
+      selectedColor: '#4bd4a6',
     },
     text: {
-      neutral: '#d1d5da',
-      correct: '#5cd3a3',
+      neutral: '#c7cbd1',
+      correct: '#4bd4a6',
       incorrect: '#e57373',
     },
   },
@@ -35,12 +36,68 @@ export const THEMES = [
       primaryColor: '#002b36',
       secondaryColor: '#073642',
       tertiaryColor: '#586e75',
-      selectedColor: '#5cd3a3',
+      selectedColor: '#2aa198',
     },
     text: {
       neutral: '#839496',
       correct: '#2aa198',
       incorrect: '#dc322f',
+    },
+  },
+  {
+    name: 'Dracula',
+    interface: {
+      primaryColor: '#282a36',
+      secondaryColor: '#44475a',
+      tertiaryColor: '#6272a4',
+      selectedColor: '#50fa7b',
+    },
+    text: {
+      neutral: '#f8f8f2',
+      correct: '#50fa7b',
+      incorrect: '#ff5555',
+    },
+  },
+  {
+    name: 'Gruvbox Dark',
+    interface: {
+      primaryColor: '#282828',
+      secondaryColor: '#3c3836',
+      tertiaryColor: '#ebdbb2',
+      selectedColor: '#fabd2f',
+    },
+    text: {
+      neutral: '#ebdbb2',
+      correct: '#b8bb26',
+      incorrect: '#fb4934',
+    },
+  },
+  {
+    name: 'Future Funk',
+    interface: {
+      primaryColor: '#2e1a47',
+      secondaryColor: '#3a245c',
+      tertiaryColor: '#d884f3',
+      selectedColor: '#ff79c6',
+    },
+    text: {
+      neutral: '#f8f8f2',
+      correct: '#ff79c6',
+      incorrect: '#ff5555',
+    },
+  },
+  {
+    name: 'Horizon',
+    interface: {
+      primaryColor: '#1c1e26',
+      secondaryColor: '#232530',
+      tertiaryColor: '#e95678',
+      selectedColor: '#fab795',
+    },
+    text: {
+      neutral: '#d5d8da',
+      correct: '#ef6b73',
+      incorrect: '#eb564b',
     },
   },
 ];
