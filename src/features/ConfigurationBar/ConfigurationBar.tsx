@@ -109,7 +109,7 @@ function ConfigurationBar({ currentMode, setCurrentMode }: Props) {
 
   return (
     <div
-      className="px-3 py-2 flex rounded-md center-absolute top-10"
+      className="px-5 py-3 flex rounded-md w-fit self-center"
       style={{ backgroundColor: currentTheme.interface.secondaryColor }}
     >
       <AnimatePresence>
