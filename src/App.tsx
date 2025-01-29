@@ -10,6 +10,7 @@ import Modal from './components/ui/Modal/Modal';
 import ThemesSelection from './features/ThemesSelection/ThemesSelection';
 import ChooseTheme from './components/ChooseTheme/ChooseTheme';
 import { ThemeProvider } from './contexts/ThemeContext';
+import Header from './features/Header/Header';
 
 function App() {
   const [currentMode, setCurrentMode] = useState<Mode>(
@@ -19,23 +20,29 @@ function App() {
 
   return (
     <ThemeProvider>
-      <ConfigurationBar
-        currentMode={currentMode}
-        setCurrentMode={setCurrentMode}
-      />
+      <div className="flex flex-col gap-60 h-screen">
+        <div className="flex flex-col gap-10">
+          <Header />
 
-      <TypingTest currentMode={currentMode} setCurrentMode={setCurrentMode} />
+          <ConfigurationBar
+            currentMode={currentMode}
+            setCurrentMode={setCurrentMode}
+          />
+        </div>
 
-      <Hints />
+        <TypingTest currentMode={currentMode} setCurrentMode={setCurrentMode} />
 
-      <Modal
-        open={themeModalOpen}
-        handleClose={() => setThemeModalOpen(false)}
-        title="Theme Selection"
-        triggerButton={<ChooseTheme action={() => setThemeModalOpen(true)} />}
-      >
-        <ThemesSelection />
-      </Modal>
+        <Hints />
+
+        <Modal
+          open={themeModalOpen}
+          handleClose={() => setThemeModalOpen(false)}
+          title="Theme Selection"
+          triggerButton={<ChooseTheme action={() => setThemeModalOpen(true)} />}
+        >
+          <ThemesSelection />
+        </Modal>
+      </div>
     </ThemeProvider>
   );
 }
