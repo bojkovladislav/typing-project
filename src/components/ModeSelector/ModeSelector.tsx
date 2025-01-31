@@ -11,7 +11,7 @@ function ModeSelector({ optionName, changeMode, selectedMode }: Props) {
   const { currentTheme } = useTheme();
 
   return (
-    <div className="cursor-pointer text-sm">
+    <div className="cursor-pointer text-lg">
       <div
         onClick={() => changeMode(optionName as Modes)}
         style={{

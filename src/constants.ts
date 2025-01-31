@@ -112,4 +112,4 @@ export const defaultMode: Mode = {
   },
 };
 
-export const KeysToIgnore = ['Alt', 'Control', 'Shift', 'Meta', 'Tab'];
+export const KeysToIgnore = ['Alt', 'Control', 'Shift', 'Meta', 'Tab', 'Enter'];

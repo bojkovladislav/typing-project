@@ -5,9 +5,9 @@ function Spacer() {
 
   return (
     <div
-      className="h-5 w-[5px] rounded bg-white shadow-sm"
+      className="h-[25px] w-[5px] rounded bg-white shadow-sm"
       style={{ backgroundColor: currentTheme.interface.tertiaryColor }}
-    ></div>
+    />
   );
 }
 

@@ -18,7 +18,7 @@ function OptionToggle({ name, value, selectedMode, changeOption }: Props) {
 
   return (
     <span
-      className="cursor-pointer text-sm"
+      className="cursor-pointer text-lg"
       key={name}
       onClick={() =>
         changeOption<Modes.WORDS, boolean>(

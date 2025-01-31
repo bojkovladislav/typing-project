@@ -18,7 +18,7 @@ function Hints() {
         <p>+</p>
         <FilledText content="Enter" />
         <p>-</p>
-        <p>restart test</p>
+        <p className="text-md">restart test</p>
       </div>
     </div>
   );

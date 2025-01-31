@@ -12,7 +12,7 @@ function ValueSelector({ changeOption, valueToCompare, value }: Props) {
   return (
     <div
       onClick={changeOption}
-      className="cursor-pointer text-sm"
+      className="cursor-pointer text-lg"
       style={{
         color:
           valueToCompare === value

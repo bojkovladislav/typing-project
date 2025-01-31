@@ -41,14 +41,14 @@ function TypingField({
 
   return (
     <div className="relative">
-      <div className="absolute left-0 top-[-30px]">
+      <div className="absolute left-0 top-[-30px] text-xl">
         {currentMode.selectedMode === Modes.TIME ? timer : wordsCounter}
       </div>
 
       {text.map((letter, i) => (
         <span
           key={i}
-          className="relative"
+          className="relative text-3xl"
           style={{ color: letter.currentColor }}
         >
           {i === currentLetterIndex && <Cursor />}

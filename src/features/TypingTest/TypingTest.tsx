@@ -90,7 +90,9 @@ function TypingTest({ currentMode, setCurrentMode }: Props) {
   return (
     <div className="flex flex-col gap-10 items-center">
       {wpmResult !== null || timer === 0 ? (
-        <p>{`Your result is ${wpmResult || 0} words per minute!`}</p>
+        <p className="text-3xl">{`Your result is ${
+          wpmResult || 0
+        } words per minute!`}</p>
       ) : (
         <TypingField
           text={textToDisplay}

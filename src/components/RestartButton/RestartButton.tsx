@@ -10,7 +10,7 @@ function RestartButton({ action, tabIndex }: RestartButtonProps) {
     <Button
       action={action}
       text="Restart test"
-      customStyles="w-[150px]"
+      customStyles="w-[150px] text-lg"
       tabIndex={tabIndex}
       fill
     />

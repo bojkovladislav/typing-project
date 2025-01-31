@@ -9,11 +9,13 @@ interface ButtonProps {
   fill?: boolean;
   icon?: ReactNode;
   iconPosition?: 'start' | 'end';
+  preventDefault?: boolean;
 }
 
 function Button({
   text,
   fill,
+  preventDefault,
   action,
   customStyles,
   tabIndex,
@@ -24,7 +26,7 @@ function Button({
 
   return (
     <button
-      onKeyDown={(e) => e.preventDefault()}
+      onKeyDown={(e) => preventDefault && e.preventDefault()}
       onClick={action}
       style={{
         backgroundColor: fill
