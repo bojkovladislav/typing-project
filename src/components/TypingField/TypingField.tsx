@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo } from 'react';
 import { Mode, Modes, WordsMode } from '../../types/configurationBar';
 import { TextCharacter } from '../../types/typing';
 import Cursor from '../ui/Cursor/Cursor';
@@ -9,6 +9,7 @@ interface Props {
   currentLetterIndex: number;
   currentMode: Mode;
   timer: number;
+  numberOfTypedWords: number;
   setTimer: SetState<number>;
 }
 
@@ -16,28 +17,29 @@ function TypingField({
   text,
   currentLetterIndex,
   currentMode,
+  numberOfTypedWords,
   timer,
   setTimer,
 }: Props) {
-  const [numberOfCorrectTypedWords, setNumberOfCorrectTypedWords] = useState(0);
-
   const wordsCounter = useMemo(() => {
-    return `${numberOfCorrectTypedWords}/${
+    return `${numberOfTypedWords} / ${
       (currentMode.additionalOptions as WordsMode).selectedNumberOfWords
     }`;
-  }, [currentMode.additionalOptions, numberOfCorrectTypedWords]);
+  }, [currentMode.additionalOptions, numberOfTypedWords]);
+
+  console.log(currentLetterIndex);
 
   useEffect(() => {
-    if (timer === 0) return;
+    if (currentMode.selectedMode !== Modes.TIME || timer === 0) return;
 
     const timeout = setTimeout(() => {
-      setTimer((prevTimer) => prevTimer - 1);
+      setTimer((prevTimer) => Math.max(prevTimer - 1, 0));
     }, 1000);
 
     return () => {
       clearTimeout(timeout);
     };
-  }, [timer, setTimer, currentMode.selectedMode]);
+  }, [timer, setTimer, currentMode.selectedMode, currentLetterIndex]);
 
   return (
     <div className="relative">

@@ -3,11 +3,12 @@ import { SetState } from '../types/common';
 import { TextCharacter } from '../types/typing';
 import { KeysToIgnore } from '../constants';
 
-type ReturnValues = [
-  currentLetterIndex: MutableRefObject<number>,
-  wpmResult: number | null,
-  restart: () => void
-];
+interface ReturnValues {
+  currentLetterIndex: MutableRefObject<number>;
+  wpmResult: number | null;
+  numberOfTypedWords: number;
+  restart: () => void;
+}
 
 export default function useTyping(
   text: TextCharacter[],
@@ -16,10 +17,15 @@ export default function useTyping(
   const currentLetterIndexRef = useRef(0);
   const [currentSecond, setCurrentSecond] = useState(0);
   const [wpmResult, setWpmResult] = useState<number | null>(null);
+  const [endIndexesOfTypedWords, setEndIndexesOfTypedWords] = useState<
+    number[]
+  >([]);
 
   function restart() {
     currentLetterIndexRef.current = 0;
     const activeElement = document.activeElement;
+
+    setEndIndexesOfTypedWords([]);
 
     if (activeElement instanceof HTMLElement) {
       activeElement.blur();
@@ -42,8 +48,6 @@ export default function useTyping(
 
     return () => clearInterval(timer);
   }, [wpmResult]);
-
-  console.log(currentLetterIndexRef.current, text.length);
 
   useEffect(() => {
     if (
@@ -96,6 +100,14 @@ export default function useTyping(
       const key = event.key;
 
       let updatedIndex = currentLetterIndexRef.current;
+
+      if (text[updatedIndex].value === ' ' && key !== 'Backspace') {
+        setEndIndexesOfTypedWords((prevIndexes) =>
+          !prevIndexes.includes(updatedIndex)
+            ? [...prevIndexes, updatedIndex]
+            : prevIndexes
+        );
+      }
 
       if (KeysToIgnore.includes(key)) return;
 
@@ -176,5 +188,10 @@ export default function useTyping(
     };
   }, [text, setText]);
 
-  return [currentLetterIndexRef, wpmResult, restart];
+  return {
+    currentLetterIndex: currentLetterIndexRef,
+    wpmResult,
+    numberOfTypedWords: endIndexesOfTypedWords.length,
+    restart,
+  };
 }

@@ -44,10 +44,8 @@ function TypingTest({ currentMode, setCurrentMode }: Props) {
     }
   }
 
-  const [currentLetterIndex, wpmResult, restart] = useTyping(
-    textToDisplay,
-    setTextToDisplay
-  );
+  const { currentLetterIndex, wpmResult, numberOfTypedWords, restart } =
+    useTyping(textToDisplay, setTextToDisplay);
 
   function restartTest() {
     restart();
@@ -67,6 +65,8 @@ function TypingTest({ currentMode, setCurrentMode }: Props) {
     if (currentMode.selectedMode === Modes.TIME) {
       setTimer((currentMode.additionalOptions as TimeMode).selectedTimeLimit);
     }
+
+    currentLetterIndex.current = 0;
 
     switch (currentMode.selectedMode) {
       case Modes.WORDS:
@@ -98,6 +98,7 @@ function TypingTest({ currentMode, setCurrentMode }: Props) {
           text={textToDisplay}
           currentMode={currentMode}
           currentLetterIndex={currentLetterIndex.current}
+          numberOfTypedWords={numberOfTypedWords}
           timer={timer}
           setTimer={setTimer}
         />
