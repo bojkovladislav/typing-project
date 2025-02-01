@@ -1,5 +1,6 @@
-import { ReactNode } from 'react';
+import { CSSProperties, ReactNode } from 'react';
 import { useTheme } from '../../../hooks/useTheme';
+import './Button.less';
 
 interface ButtonProps {
   text?: string;
@@ -7,6 +8,7 @@ interface ButtonProps {
   customStyles?: string;
   tabIndex?: number;
   fill?: boolean;
+  hoverEffect: boolean;
   icon?: ReactNode;
   iconPosition?: 'start' | 'end';
   preventDefault?: boolean;
@@ -18,22 +20,28 @@ function Button({
   preventDefault,
   action,
   customStyles,
+  hoverEffect,
   tabIndex,
   iconPosition = 'start',
   icon,
 }: ButtonProps) {
-  const theme = useTheme();
+  const { currentTheme } = useTheme();
 
   return (
     <button
       onKeyDown={(e) => preventDefault && e.preventDefault()}
       onClick={action}
-      style={{
-        backgroundColor: fill
-          ? theme.currentTheme.interface.selectedColor
-          : 'transparent',
-      }}
-      className={customStyles}
+      style={
+        {
+          backgroundColor: fill
+            ? currentTheme.interface.selectedColor
+            : 'transparent',
+          '--button-hover-color': hoverEffect
+            ? currentTheme.interface.selectedColor
+            : 'white',
+        } as CSSProperties
+      }
+      className={`${customStyles} custom-button`}
       tabIndex={tabIndex}
     >
       {icon ? (
