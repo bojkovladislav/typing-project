@@ -1,4 +1,4 @@
-import { useEffect, useMemo } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { Mode, Modes, WordsMode } from '../../types/configurationBar';
 import { TextCharacter } from '../../types/typing';
 import Cursor from '../ui/Cursor/Cursor';
@@ -21,6 +21,16 @@ function TypingField({
   timer,
   setTimer,
 }: Props) {
+  const PEAK_NUMBER_OF_CHARACTERS = 50;
+
+  const initialVisibleCount = useMemo(() => {
+    return Math.min(text.length, PEAK_NUMBER_OF_CHARACTERS);
+  }, [text]);
+
+  const [visibleCount, setVisibleCount] = useState(PEAK_NUMBER_OF_CHARACTERS);
+
+  console.log('visible', visibleCount);
+
   const wordsCounter = useMemo(() => {
     return `${numberOfTypedWords} / ${
       (currentMode.additionalOptions as WordsMode).selectedNumberOfWords
@@ -41,22 +51,46 @@ function TypingField({
     };
   }, [timer, setTimer, currentMode.selectedMode, currentLetterIndex]);
 
+  useEffect(() => {
+    if (
+      visibleCount >= PEAK_NUMBER_OF_CHARACTERS &&
+      currentLetterIndex >= visibleCount
+    ) {
+      setVisibleCount((prevCount) => {
+        const remainingCharacters = text.length - prevCount;
+
+        console.log('remaining', remainingCharacters);
+
+        if (remainingCharacters > PEAK_NUMBER_OF_CHARACTERS)
+          return prevCount + PEAK_NUMBER_OF_CHARACTERS;
+
+        console.log('remaining', remainingCharacters);
+
+        return prevCount + remainingCharacters;
+      });
+    }
+  }, [currentLetterIndex]);
+
   return (
     <div className="relative">
       <div className="absolute left-0 top-[-30px] text-xl">
         {currentMode.selectedMode === Modes.TIME ? timer : wordsCounter}
       </div>
 
-      {text.map((letter, i) => (
-        <span
-          key={i}
-          className="relative text-3xl"
-          style={{ color: letter.currentColor }}
-        >
-          {i === currentLetterIndex && <Cursor />}
-          {letter.value}
-        </span>
-      ))}
+      <div
+      //  className="max-w-[1500px] overflow-y-hidden transition-all duration-300 ease-in-out h-[100px]"
+      >
+        {text.slice(0, visibleCount).map((letter, i) => (
+          <span
+            key={i}
+            className="relative text-3xl"
+            style={{ color: letter.currentColor }}
+          >
+            {i === currentLetterIndex && <Cursor />}
+            {letter.value}
+          </span>
+        ))}
+      </div>
     </div>
   );
 }

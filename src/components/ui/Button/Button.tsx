@@ -6,6 +6,7 @@ interface ButtonProps {
   text?: string;
   action: () => void;
   customStyles?: string;
+  additionalStyles?: CSSProperties;
   tabIndex?: number;
   fill?: boolean;
   hoverEffect: boolean;
@@ -20,6 +21,7 @@ function Button({
   preventDefault,
   action,
   customStyles,
+  additionalStyles,
   hoverEffect,
   tabIndex,
   iconPosition = 'start',
@@ -39,6 +41,7 @@ function Button({
           '--button-hover-color': hoverEffect
             ? currentTheme.interface.selectedColor
             : 'white',
+          ...additionalStyles,
         } as CSSProperties
       }
       className={`${customStyles} custom-button`}
