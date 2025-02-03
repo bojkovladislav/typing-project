@@ -100,6 +100,48 @@ export const THEMES = [
       incorrect: '#eb564b',
     },
   },
+  {
+    name: 'Nord',
+    interface: {
+      primaryColor: '#2e3440',
+      secondaryColor: '#3b4252',
+      tertiaryColor: '#88c0d0',
+      selectedColor: '#8fbcbb',
+    },
+    text: {
+      neutral: '#eceff4',
+      correct: '#a3be8c',
+      incorrect: '#bf616a',
+    },
+  },
+  {
+    name: 'Monokai',
+    interface: {
+      primaryColor: '#272822',
+      secondaryColor: '#3e3d32',
+      tertiaryColor: '#f8f8f2',
+      selectedColor: '#f92672',
+    },
+    text: {
+      neutral: '#f8f8f2',
+      correct: '#a6e22e',
+      incorrect: '#f92672',
+    },
+  },
+  {
+    name: 'Cyberpunk',
+    interface: {
+      primaryColor: '#000000',
+      secondaryColor: '#1a1a1a',
+      tertiaryColor: '#ff0099',
+      selectedColor: '#00ffff',
+    },
+    text: {
+      neutral: '#ffffff',
+      correct: '#00ff00',
+      incorrect: '#ff0000',
+    },
+  },
 ];
 
 export const defaultMode: Mode = {
