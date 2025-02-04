@@ -37,7 +37,7 @@ function App() {
         <Modal
           open={themeModalOpen}
           handleClose={() => setThemeModalOpen(false)}
-          title="Theme Selection"
+          title="Theme"
           triggerButton={<ChooseTheme action={() => setThemeModalOpen(true)} />}
         >
           <ThemesSelection />
