@@ -11,12 +11,14 @@ interface Props {
   timer: number;
   numberOfTypedWords: number;
   setTimer: SetState<number>;
+  loading: boolean;
 }
 
 function TypingField({
   text,
   currentLetterIndex,
   currentMode,
+  loading,
   numberOfTypedWords,
   timer,
   setTimer,
@@ -73,9 +75,11 @@ function TypingField({
 
   return (
     <div className="relative">
-      <div className="absolute left-0 top-[-30px] text-xl">
-        {currentMode.selectedMode === Modes.TIME ? timer : wordsCounter}
-      </div>
+      {!loading && (
+        <div className="absolute left-0 top-[-30px] text-xl">
+          {currentMode.selectedMode === Modes.TIME ? timer : wordsCounter}
+        </div>
+      )}
 
       <div
       //  className="max-w-[1500px] overflow-y-hidden transition-all duration-300 ease-in-out h-[100px]"

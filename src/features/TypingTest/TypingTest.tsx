@@ -1,12 +1,12 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import TypingField from '../../components/TypingField/TypingField';
 import useTyping from '../../hooks/useTyping';
 import RestartButton from '../../components/RestartButton/RestartButton';
 import { TextCharacter } from '../../types/typing';
-import { useTheme } from '../../hooks/useTheme';
 import { Mode, Modes, TimeMode, WordsMode } from '../../types/configurationBar';
 import { SetState } from '../../types/common';
 import { fetchWords } from '../../api';
+import { useFetch } from '../../hooks/useFetch';
 
 interface Props {
   currentMode: Mode;
@@ -14,53 +14,40 @@ interface Props {
 }
 
 function TypingTest({ currentMode, setCurrentMode }: Props) {
-  const { currentTheme } = useTheme();
   const [textToDisplay, setTextToDisplay] = useState<TextCharacter[]>([]);
   const [timer, setTimer] = useState<number>(
     (currentMode.additionalOptions as TimeMode).selectedTimeLimit || 60
   );
 
-  function normalizeText(text: string) {
-    return text.split('').map((letter) => ({
-      value: letter,
-      currentColor: currentTheme.text.neutral,
-      colors: currentTheme.text,
-    }));
-  }
+  const fetchWordsCallback = useCallback(() => {
+    return fetchWords(
+      false,
+      false,
+      (currentMode.additionalOptions as WordsMode).selectedNumberOfWords
+    );
+  }, [currentMode]);
 
-  async function fetchRandomWords() {
-    try {
-      const { error, data } = await fetchWords(
-        false,
-        false,
-        (currentMode.additionalOptions as WordsMode).selectedNumberOfWords
-      );
+  const {
+    loading: wordsLoading,
+    data: wordsData,
+    error: wordsError,
+    refetch: getWords,
+  } = useFetch(fetchWordsCallback, true);
 
-      if (error) throw new Error(error);
-
-      const preparedText = normalizeText(data);
-
-      setTextToDisplay(preparedText);
-    } catch (error) {
-      console.error(error);
+  useEffect(() => {
+    if (wordsData?.data) {
+      console.log(wordsData.data);
+      setTextToDisplay(wordsData.data);
     }
-  }
+  }, [wordsData?.data]);
 
   const { currentLetterIndex, wpmResult, numberOfTypedWords, restart } =
     useTyping(textToDisplay, setTextToDisplay);
 
   function restartTest() {
     restart();
-
-    setTextToDisplay((prevText) =>
-      prevText.map((letter) => ({
-        ...letter,
-        value: '',
-        currentColor: currentTheme.text.neutral,
-      }))
-    );
-
-    fetchRandomWords();
+    setTextToDisplay([]);
+    getWords();
   }
 
   useEffect(() => {
@@ -70,22 +57,8 @@ function TypingTest({ currentMode, setCurrentMode }: Props) {
 
     currentLetterIndex.current = 0;
 
-    switch (currentMode.selectedMode) {
-      case Modes.WORDS:
-        fetchRandomWords();
-        break;
-
-      default:
-        setTextToDisplay(
-          normalizeText(
-            'djasldjalsjdal;skjda;lsjdl;asj dlaskj dlaskjd laskjdaslkjdaslkjdlaskjd asldlaksjd'
-          )
-        );
-        break;
-    }
-
     if (currentMode.selectedMode === Modes.WORDS) {
-      fetchRandomWords();
+      getWords();
     }
   }, [currentMode]);
 
@@ -103,6 +76,7 @@ function TypingTest({ currentMode, setCurrentMode }: Props) {
           numberOfTypedWords={numberOfTypedWords}
           timer={timer}
           setTimer={setTimer}
+          loading={wordsLoading}
         />
       )}
 
