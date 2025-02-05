@@ -2,11 +2,11 @@ import { useEffect, useState } from 'react';
 import TypingField from '../../components/TypingField/TypingField';
 import useTyping from '../../hooks/useTyping';
 import RestartButton from '../../components/RestartButton/RestartButton';
-import axios from 'axios';
 import { TextCharacter } from '../../types/typing';
 import { useTheme } from '../../hooks/useTheme';
 import { Mode, Modes, TimeMode, WordsMode } from '../../types/configurationBar';
 import { SetState } from '../../types/common';
+import { fetchWords } from '../../api';
 
 interface Props {
   currentMode: Mode;
@@ -30,13 +30,15 @@ function TypingTest({ currentMode, setCurrentMode }: Props) {
 
   async function fetchRandomWords() {
     try {
-      const REQUESTED_URL = `https://random-word-api.vercel.app/api?words=${
+      const { error, data } = await fetchWords(
+        false,
+        false,
         (currentMode.additionalOptions as WordsMode).selectedNumberOfWords
-      }`;
+      );
 
-      const response = await axios.get(REQUESTED_URL);
+      if (error) throw new Error(error);
 
-      const preparedText = normalizeText(response.data.join(' '));
+      const preparedText = normalizeText(data);
 
       setTextToDisplay(preparedText);
     } catch (error) {
