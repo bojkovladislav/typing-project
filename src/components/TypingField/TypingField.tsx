@@ -23,13 +23,15 @@ function TypingField({
   timer,
   setTimer,
 }: Props) {
-  const PEAK_NUMBER_OF_CHARACTERS = 50;
+  const PEAK_NUMBER_OF_CHARACTERS = 100;
 
-  const initialVisibleCount = useMemo(() => {
-    return Math.min(text.length, PEAK_NUMBER_OF_CHARACTERS);
-  }, [text]);
+  const [visibleCount, setVisibleCount] = useState(0);
 
-  const [visibleCount, setVisibleCount] = useState(PEAK_NUMBER_OF_CHARACTERS);
+  useEffect(() => {
+    if (!loading && text.length > 0) {
+      setVisibleCount(Math.min(text.length, PEAK_NUMBER_OF_CHARACTERS));
+    }
+  }, [text, loading]);
 
   console.log('visible', visibleCount);
 
@@ -81,9 +83,7 @@ function TypingField({
         </div>
       )}
 
-      <div
-      //  className="max-w-[1500px] overflow-y-hidden transition-all duration-300 ease-in-out h-[100px]"
-      >
+      <div className="max-w-[1500px] overflow-y-hidden transition-all duration-300 ease-in-out h-[100px]">
         {text.slice(0, visibleCount).map((letter, i) => (
           <span
             key={i}
