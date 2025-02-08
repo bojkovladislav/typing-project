@@ -1,4 +1,4 @@
-import { useEffect, useState, useCallback } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import { ResultData } from '../types/api';
 import { useTheme } from './useTheme';
 import { TextCharacter } from '../types/typing';
@@ -32,6 +32,11 @@ export function useFetch(
       } else {
         setData({ ...response, data: normalizeText(response.data) });
       }
+
+      console.log(
+        'The data has been successfully fetched! ',
+        response.data.slice(0, 10)
+      );
     } catch (err) {
       setError('Something went wrong while fetching data!');
     } finally {

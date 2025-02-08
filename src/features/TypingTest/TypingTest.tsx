@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import TypingField from '../../components/TypingField/TypingField';
 import useTyping from '../../hooks/useTyping';
 import RestartButton from '../../components/RestartButton/RestartButton';
@@ -19,24 +19,35 @@ function TypingTest({ currentMode, setCurrentMode }: Props) {
     (currentMode.additionalOptions as TimeMode).selectedTimeLimit || 60
   );
 
-  const fetchWordsCallback = useCallback(() => {
-    return fetchWords(
-      false,
-      false,
-      (currentMode.additionalOptions as WordsMode).selectedNumberOfWords
-    );
-  }, [currentMode]);
+  console.log('this is rendered twice!');
+
+  // const fetchWordsCallback = useCallback(() => {
+  //   console.log('TESTING INSIDE CALLBACK');
+
+  //   return fetchWords(
+  //     false,
+  //     false,
+  //     (currentMode.additionalOptions as WordsMode).selectedNumberOfWords
+  //   );
+  // }, [currentMode.additionalOptions]);
 
   const {
     loading: wordsLoading,
     data: wordsData,
     error: wordsError,
     refetch: getWords,
-  } = useFetch(fetchWordsCallback, true);
+  } = useFetch(
+    () =>
+      fetchWords(
+        false,
+        false,
+        (currentMode.additionalOptions as WordsMode).selectedNumberOfWords
+      ),
+    true
+  );
 
   useEffect(() => {
     if (wordsData?.data) {
-      console.log(wordsData.data);
       setTextToDisplay(wordsData.data);
     }
   }, [wordsData?.data]);

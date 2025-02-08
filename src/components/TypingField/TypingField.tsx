@@ -23,17 +23,40 @@ function TypingField({
   timer,
   setTimer,
 }: Props) {
-  const PEAK_NUMBER_OF_CHARACTERS = 100;
+  const words = text
+    .map((letter) => letter.value)
+    .join('')
+    .split(' ');
+
+  console.log(words.slice(0, 2).join(' ').trim());
+
+  // const test = words.slice(0, 2).join(' ').trim().length;
+
+  const PEAK_NUMBER_OF_CHARACTERS = words.slice(0, 2).join(' ').length;
+
+  // console.log(
+  //   words.slice(0, 2).join(' ').trim().length,
+  //   PEAK_NUMBER_OF_CHARACTERS
+  // );
+
+  // console.log(
+  //   text
+  //     .slice(0, 17)
+  //     .map((letter) => letter.value)
+  //     .join('')
+  // );
+
+  // FIGURE OUT WHY DATA IS GETTING FETCHED 2 TIMES === THIS WILL SOLVE THE PROBLEM HERE TOO.
 
   const [visibleCount, setVisibleCount] = useState(0);
 
+  console.log(PEAK_NUMBER_OF_CHARACTERS, visibleCount);
+
   useEffect(() => {
-    if (!loading && text.length > 0) {
+    if (!loading && text.length > 0 && visibleCount === 0) {
       setVisibleCount(Math.min(text.length, PEAK_NUMBER_OF_CHARACTERS));
     }
   }, [text, loading]);
-
-  console.log('visible', visibleCount);
 
   const wordsCounter = useMemo(() => {
     return `${numberOfTypedWords} / ${
@@ -56,19 +79,12 @@ function TypingField({
   }, [timer, setTimer, currentMode.selectedMode, currentLetterIndex]);
 
   useEffect(() => {
-    if (
-      visibleCount >= PEAK_NUMBER_OF_CHARACTERS &&
-      currentLetterIndex >= visibleCount
-    ) {
+    if (currentLetterIndex > visibleCount / 2) {
       setVisibleCount((prevCount) => {
         const remainingCharacters = text.length - prevCount;
 
-        console.log('remaining', remainingCharacters);
-
         if (remainingCharacters > PEAK_NUMBER_OF_CHARACTERS)
           return prevCount + PEAK_NUMBER_OF_CHARACTERS;
-
-        console.log('remaining', remainingCharacters);
 
         return prevCount + remainingCharacters;
       });
@@ -83,7 +99,7 @@ function TypingField({
         </div>
       )}
 
-      <div className="max-w-[1500px] overflow-y-hidden transition-all duration-300 ease-in-out h-[100px]">
+      <div className="max-w-[1500px] transition-all duration-300 ease-in-out max-h-[200px]">
         {text.slice(0, visibleCount).map((letter, i) => (
           <span
             key={i}
