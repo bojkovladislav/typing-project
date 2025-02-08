@@ -11,6 +11,7 @@ import ThemesSelection from './features/ThemesSelection/ThemesSelection';
 import ChooseTheme from './components/ChooseTheme/ChooseTheme';
 import { ThemeProvider } from './contexts/ThemeContext';
 import Header from './features/Header/Header';
+import Version from './features/Version/Version';
 
 function App() {
   const [currentMode, setCurrentMode] = useState<Mode>(
@@ -44,6 +45,8 @@ function App() {
         >
           <ThemesSelection />
         </Modal>
+
+        <Version />
       </div>
     </ThemeProvider>
   );
