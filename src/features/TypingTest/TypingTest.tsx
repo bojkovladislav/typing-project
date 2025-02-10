@@ -19,16 +19,6 @@ function TypingTest({ currentMode, setCurrentMode }: Props) {
     (currentMode.additionalOptions as TimeMode).selectedTimeLimit || 60
   );
 
-  // const fetchWordsCallback = useCallback(() => {
-  //   console.log('TESTING INSIDE CALLBACK');
-
-  //   return fetchWords(
-  //     false,
-  //     false,
-  //     (currentMode.additionalOptions as WordsMode).selectedNumberOfWords
-  //   );
-  // }, [currentMode.additionalOptions]);
-
   const {
     loading: wordsLoading,
     data: wordsData,

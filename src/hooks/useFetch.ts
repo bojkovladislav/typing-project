@@ -1,4 +1,4 @@
-import { useState, useCallback, useEffect } from 'react';
+import { useState, useCallback } from 'react';
 import { ResultData } from '../types/api';
 import { useTheme } from './useTheme';
 import { TextCharacter } from '../types/typing';
@@ -38,10 +38,6 @@ export function useFetch(
       setLoading(false);
     }
   }, [fetchData]);
-
-  useEffect(() => {
-    getData();
-  }, []);
 
   return { loading, data, error, refetch: getData };
 }

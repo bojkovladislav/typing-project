@@ -3,6 +3,7 @@ import { Mode, Modes, WordsMode } from '../../types/configurationBar';
 import { TextCharacter } from '../../types/typing';
 import Cursor from '../ui/Cursor/Cursor';
 import { SetState } from '../../types/common';
+import { defaultMode } from '../../constants';
 
 interface Props {
   text: TextCharacter[];
@@ -28,29 +29,29 @@ function TypingField({
     .join('')
     .split(' ');
 
-  // const test = words.slice(0, 2).join(' ').trim().length;
+  function determineWordsLength() {
+    const defaultLengths = (defaultMode.additionalOptions as WordsMode)
+      .lengthToSelect;
 
-  const PEAK_NUMBER_OF_CHARACTERS = words.slice(0, 2).join(' ').length;
+    if (text.length > defaultLengths[1]) {
+      return text.length === defaultLengths[2] ? 30 : 50;
+    }
+  }
 
-  // console.log(
-  //   words.slice(0, 2).join(' ').trim().length,
-  //   PEAK_NUMBER_OF_CHARACTERS
-  // );
+  const PEAK_NUMBER_OF_CHARACTERS = words
+    .slice(0, determineWordsLength())
+    .join(' ').length;
 
-  // console.log(
-  //   text
-  //     .slice(0, 17)
-  //     .map((letter) => letter.value)
-  //     .join('')
-  // );
-
-  // FIGURE OUT WHY DATA IS GETTING FETCHED 2 TIMES === THIS WILL SOLVE THE PROBLEM HERE TOO.
+  console.log(
+    words.slice(0, determineWordsLength()).length,
+    PEAK_NUMBER_OF_CHARACTERS
+  );
 
   const [visibleCount, setVisibleCount] = useState(0);
 
   useEffect(() => {
     if (!loading && text.length > 0 && visibleCount === 0) {
-      setVisibleCount(Math.min(text.length, PEAK_NUMBER_OF_CHARACTERS));
+      setVisibleCount(Math.min(text.length));
     }
   }, [text, loading]);
 
