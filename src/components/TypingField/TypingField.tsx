@@ -28,8 +28,6 @@ function TypingField({
     .join('')
     .split(' ');
 
-  console.log(words.slice(0, 2).join(' ').trim());
-
   // const test = words.slice(0, 2).join(' ').trim().length;
 
   const PEAK_NUMBER_OF_CHARACTERS = words.slice(0, 2).join(' ').length;
@@ -50,8 +48,6 @@ function TypingField({
 
   const [visibleCount, setVisibleCount] = useState(0);
 
-  console.log(PEAK_NUMBER_OF_CHARACTERS, visibleCount);
-
   useEffect(() => {
     if (!loading && text.length > 0 && visibleCount === 0) {
       setVisibleCount(Math.min(text.length, PEAK_NUMBER_OF_CHARACTERS));
@@ -63,8 +59,6 @@ function TypingField({
       (currentMode.additionalOptions as WordsMode).selectedNumberOfWords
     }`;
   }, [currentMode.additionalOptions, numberOfTypedWords]);
-
-  console.log(currentLetterIndex);
 
   useEffect(() => {
     if (currentMode.selectedMode !== Modes.TIME || timer === 0) return;

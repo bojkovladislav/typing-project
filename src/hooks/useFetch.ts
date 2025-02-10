@@ -32,11 +32,6 @@ export function useFetch(
       } else {
         setData({ ...response, data: normalizeText(response.data) });
       }
-
-      console.log(
-        'The data has been successfully fetched! ',
-        response.data.slice(0, 10)
-      );
     } catch (err) {
       setError('Something went wrong while fetching data!');
     } finally {

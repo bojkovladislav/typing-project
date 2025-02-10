@@ -19,8 +19,6 @@ function App() {
   );
   const [themeModalOpen, setThemeModalOpen] = useState(false);
 
-  console.log('THIS IS A');
-
   return (
     <ThemeProvider>
       <div className="flex flex-col gap-60 h-screen">

@@ -4,8 +4,6 @@ import { useTheme } from '../../hooks/useTheme';
 function Hints() {
   const { currentTheme } = useTheme();
 
-  console.log(currentTheme + ' has changed');
-
   return (
     <div className="bottom-10 center-absolute">
       <div

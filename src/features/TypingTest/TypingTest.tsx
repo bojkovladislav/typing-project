@@ -19,8 +19,6 @@ function TypingTest({ currentMode, setCurrentMode }: Props) {
     (currentMode.additionalOptions as TimeMode).selectedTimeLimit || 60
   );
 
-  console.log('this is rendered twice!');
-
   // const fetchWordsCallback = useCallback(() => {
   //   console.log('TESTING INSIDE CALLBACK');
 
