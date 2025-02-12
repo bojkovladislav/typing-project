@@ -3,11 +3,16 @@ import InfiniteScroll from 'react-infinite-scroll-component';
 import { useTheme } from '../../hooks/useTheme';
 import { THEMES } from '../../constants';
 
-function ThemesSelection() {
+interface Props {
+  handleModalClose: () => void;
+}
+
+function ThemesSelection({ handleModalClose }: Props) {
   const { changeTheme } = useTheme();
 
   function handleThemeSwitch(newTheme: (typeof THEMES)[number]) {
     changeTheme(newTheme);
+    handleModalClose();
   }
 
   return (

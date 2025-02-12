@@ -19,6 +19,10 @@ function App() {
   );
   const [themeModalOpen, setThemeModalOpen] = useState(false);
 
+  function handleModalClose() {
+    setThemeModalOpen(false);
+  }
+
   return (
     <ThemeProvider>
       <div className="flex flex-col gap-60 h-screen">
@@ -37,11 +41,11 @@ function App() {
 
         <Modal
           open={themeModalOpen}
-          handleClose={() => setThemeModalOpen(false)}
+          handleClose={handleModalClose}
           title="Theme"
           triggerButton={<ChooseTheme action={() => setThemeModalOpen(true)} />}
         >
-          <ThemesSelection />
+          <ThemesSelection handleModalClose={handleModalClose} />
         </Modal>
 
         <Version />
