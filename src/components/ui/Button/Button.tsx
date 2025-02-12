@@ -9,7 +9,7 @@ interface ButtonProps {
   additionalStyles?: CSSProperties;
   tabIndex?: number;
   fill?: boolean;
-  hoverEffect: boolean;
+  hoverEffect?: boolean;
   icon?: ReactNode;
   iconPosition?: 'start' | 'end';
   preventDefault?: boolean;

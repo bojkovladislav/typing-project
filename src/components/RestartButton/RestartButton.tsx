@@ -1,3 +1,4 @@
+import { useTheme } from '../../hooks/useTheme';
 import Button from '../ui/Button/Button';
 
 interface RestartButtonProps {
@@ -6,6 +7,8 @@ interface RestartButtonProps {
 }
 
 function RestartButton({ action, tabIndex }: RestartButtonProps) {
+  const { currentTheme } = useTheme();
+
   return (
     <Button
       action={action}
@@ -13,6 +16,7 @@ function RestartButton({ action, tabIndex }: RestartButtonProps) {
       customStyles="w-[150px] text-lg"
       tabIndex={tabIndex}
       fill
+      additionalStyles={{ color: currentTheme.interface.primaryColor }}
     />
   );
 }
