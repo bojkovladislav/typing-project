@@ -68,16 +68,20 @@ function TypingTest({ currentMode, setCurrentMode }: Props) {
           wpmResult || 0
         } words per minute!`}</p>
       ) : (
-        <TypingField
-          text={textToDisplay}
-          currentMode={currentMode}
-          currentLetterIndex={currentLetterIndex.current}
-          numberOfTypedWords={numberOfTypedWords}
-          timer={timer}
-          setTimer={setTimer}
-          loading={wordsLoading}
-        />
+        !wordsError && (
+          <TypingField
+            text={textToDisplay}
+            currentMode={currentMode}
+            currentLetterIndex={currentLetterIndex.current}
+            numberOfTypedWords={numberOfTypedWords}
+            timer={timer}
+            setTimer={setTimer}
+            loading={wordsLoading}
+          />
+        )
       )}
+
+      {wordsError && <p>{wordsError}</p>}
 
       <RestartButton action={restartTest} tabIndex={0} />
     </div>
