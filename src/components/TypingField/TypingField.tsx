@@ -33,27 +33,20 @@ function TypingField({
     const defaultLengths = (defaultMode.additionalOptions as WordsMode)
       .lengthToSelect;
 
-    if (text.length > defaultLengths[1]) {
-      return text.length === defaultLengths[2] ? 30 : 50;
+    if (words.length > defaultLengths[1]) {
+      return words.length >= defaultLengths[2] ? 35 : defaultLengths[1];
     }
   }
 
-  const PEAK_NUMBER_OF_CHARACTERS = words
-    .slice(0, determineWordsLength())
-    .join(' ').length;
+  const PEAK_NUMBER_OF_CHARACTERS = useMemo(() => {
+    return words.slice(0, determineWordsLength()).join(' ').length;
+  }, [text.length]);
 
-  console.log(
-    words.slice(0, determineWordsLength()).length,
-    PEAK_NUMBER_OF_CHARACTERS
-  );
-
-  const [visibleCount, setVisibleCount] = useState(0);
+  const [visibleCount, setVisibleCount] = useState(PEAK_NUMBER_OF_CHARACTERS);
 
   useEffect(() => {
-    if (!loading && text.length > 0 && visibleCount === 0) {
-      setVisibleCount(Math.min(text.length));
-    }
-  }, [text, loading]);
+    setVisibleCount(PEAK_NUMBER_OF_CHARACTERS);
+  }, [PEAK_NUMBER_OF_CHARACTERS]);
 
   const wordsCounter = useMemo(() => {
     return `${numberOfTypedWords} / ${
@@ -74,16 +67,13 @@ function TypingField({
   }, [timer, setTimer, currentMode.selectedMode, currentLetterIndex]);
 
   useEffect(() => {
-    if (currentLetterIndex > visibleCount / 2) {
-      setVisibleCount((prevCount) => {
-        const remainingCharacters = text.length - prevCount;
+    setVisibleCount((prevCount) => {
+      if (prevCount - currentLetterIndex === 10) {
+        return prevCount + PEAK_NUMBER_OF_CHARACTERS;
+      }
 
-        if (remainingCharacters > PEAK_NUMBER_OF_CHARACTERS)
-          return prevCount + PEAK_NUMBER_OF_CHARACTERS;
-
-        return prevCount + remainingCharacters;
-      });
-    }
+      return prevCount;
+    });
   }, [currentLetterIndex]);
 
   return (
@@ -94,12 +84,15 @@ function TypingField({
         </div>
       )}
 
-      <div className="max-w-[1500px] transition-all duration-300 ease-in-out max-h-[200px]">
+      <div className="max-w-[1500px] transition-all duration-300 ease-in-out">
         {text.slice(0, visibleCount).map((letter, i) => (
           <span
             key={i}
-            className="relative text-3xl"
-            style={{ color: letter.currentColor }}
+            className="relative text-3xl mb-3"
+            style={{
+              color: letter.currentColor,
+              display: `inline${!letter.value.trim().length ? '' : '-block'}`,
+            }}
           >
             {i === currentLetterIndex && <Cursor />}
             {letter.value}

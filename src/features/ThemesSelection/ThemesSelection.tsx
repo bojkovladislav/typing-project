@@ -51,6 +51,7 @@ function ThemesSelection({ handleModalClose }: Props) {
                   .map((colorName) => {
                     return (
                       <div
+                        key={colorName}
                         className="rounded-full"
                         style={{
                           backgroundColor:
