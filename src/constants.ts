@@ -3,20 +3,6 @@ import { Modes } from './types/enums';
 
 export const THEMES = [
   {
-    name: 'Light',
-    interface: {
-      primaryColor: '#ffffff',
-      secondaryColor: '#f2f3f5',
-      tertiaryColor: '#c5c8cc',
-      selectedColor: '#4bd4a6',
-    },
-    text: {
-      neutral: '#2d2f34',
-      correct: '#27ae60',
-      incorrect: '#e74c3c',
-    },
-  },
-  {
     name: 'Dark',
     interface: {
       primaryColor: '#0f111a',
@@ -112,20 +98,6 @@ export const THEMES = [
       neutral: '#eceff4',
       correct: '#a3be8c',
       incorrect: '#bf616a',
-    },
-  },
-  {
-    name: 'Monokai',
-    interface: {
-      primaryColor: '#272822',
-      secondaryColor: '#3e3d32',
-      tertiaryColor: '#f8f8f2',
-      selectedColor: '#f92672',
-    },
-    text: {
-      neutral: '#f8f8f2',
-      correct: '#a6e22e',
-      incorrect: '#f92672',
     },
   },
   {
