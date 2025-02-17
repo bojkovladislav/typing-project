@@ -28,7 +28,7 @@ function TypingTest({ currentMode, setCurrentMode }: Props) {
     () =>
       fetchWords(
         false,
-        false,
+        (currentMode.additionalOptions as WordsMode).numbers,
         (currentMode.additionalOptions as WordsMode).selectedNumberOfWords
       ),
     true

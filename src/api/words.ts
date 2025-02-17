@@ -8,6 +8,38 @@ export async function fetchWords(
   numbers: boolean,
   numberOfWords: NumberOfWords[number]
 ) {
+  function generateRandomNumbers(
+    quantity: number,
+    max: number,
+    min = 0
+  ): number[] {
+    return Array.from(
+      { length: quantity },
+      () => Math.floor(Math.random() * (max - min + 1)) + min
+    );
+  }
+
+  function integrateNumbers(words: string[]) {
+    const percentage = 25;
+    const numberOfNumbers = Math.floor((words.length / 100) * percentage);
+
+    const numbers = generateRandomNumbers(numberOfNumbers, 1000);
+    const numberPositions = generateRandomNumbers(
+      numberOfNumbers,
+      words.length - 1
+    );
+
+    return words
+      .map((word, index) => {
+        if (numberPositions.includes(index)) {
+          return numbers.shift();
+        }
+
+        return word;
+      })
+      .join(' ');
+  }
+
   const resultData = {
     error: '',
     message: '',
@@ -19,7 +51,14 @@ export async function fetchWords(
     const response = await axios.get<string[]>(preparedUrl);
 
     resultData.message = 'The data has been successfully fetched';
-    resultData.data = response.data.join(' ');
+
+    const words = response.data;
+
+    if (numbers) {
+      resultData.data = integrateNumbers(words);
+    } else {
+      resultData.data = response.data.join(' ');
+    }
   } catch (error) {
     const errorMessage =
       error instanceof Error
