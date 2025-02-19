@@ -19,24 +19,85 @@ export async function fetchWords(
     );
   }
 
-  function integrateNumbers(words: string[]) {
-    const percentage = 25;
-    const numberOfNumbers = Math.floor((words.length / 100) * percentage);
+  function calculatePercentageValue(
+    baseValue: number,
+    percentage: number = 25
+  ) {
+    return Math.floor((baseValue / 100) * percentage);
+  }
 
-    const numbers = generateRandomNumbers(numberOfNumbers, 1000);
-    const numberPositions = generateRandomNumbers(
-      numberOfNumbers,
+  // so I need to add punctuation.
+
+  // punctuation signs:
+
+  // , . - " ; '
+
+  // sample:
+
+  // 10 words
+  // generate positions of each
+
+  function getRandomSigns(
+    quantity: number,
+    max: number,
+    punctuationSigns: string[]
+  ) {
+    return generateRandomNumbers(quantity, max).map(
+      (number) => punctuationSigns[number]
+    );
+  }
+
+  function getCorrectWordWithSign(word: string, sign: string) {
+    if (sign === `'` || sign === '"') {
+      return `${sign}${word}${sign}`;
+    }
+
+    if (sign === '-') {
+      return `${word} -`;
+    }
+
+    return `${word}${sign}`;
+  }
+
+  function integratePunctuation(words: string[]) {
+    const numberOfPunctuationSigns = calculatePercentageValue(words.length);
+
+    const punctuationSigns = [',', '.', '-', '"', `'`];
+
+    const punctuationPositions = generateRandomNumbers(
+      numberOfPunctuationSigns,
       words.length - 1
+    );
+    const signs = getRandomSigns(
+      numberOfPunctuationSigns,
+      words.length - 1,
+      punctuationSigns
     );
 
     return words
       .map((word, index) => {
-        if (numberPositions.includes(index)) {
-          return numbers.shift();
+        if (punctuationPositions.includes(index)) {
+          return getCorrectWordWithSign(word, signs.shift() as string);
         }
 
         return word;
       })
+      .join(' ');
+  }
+
+  function insertRandomNumbers(words: string[]) {
+    const countOfNumbers = calculatePercentageValue(words.length);
+
+    const randomNumbers = generateRandomNumbers(countOfNumbers, 1000);
+    const randomPositions = generateRandomNumbers(
+      countOfNumbers,
+      words.length - 1
+    );
+
+    return words
+      .map((word, index) =>
+        randomPositions.includes(index) ? randomNumbers.shift() : word
+      )
       .join(' ');
   }
 
@@ -55,7 +116,9 @@ export async function fetchWords(
     const words = response.data;
 
     if (numbers) {
-      resultData.data = integrateNumbers(words);
+      resultData.data = insertRandomNumbers(words);
+    } else if (punctuation) {
+      resultData.data = integratePunctuation(words);
     } else {
       resultData.data = response.data.join(' ');
     }

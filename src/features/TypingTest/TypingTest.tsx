@@ -27,7 +27,7 @@ function TypingTest({ currentMode, setCurrentMode }: Props) {
   } = useFetch(
     () =>
       fetchWords(
-        false,
+        (currentMode.additionalOptions as WordsMode).punctuation,
         (currentMode.additionalOptions as WordsMode).numbers,
         (currentMode.additionalOptions as WordsMode).selectedNumberOfWords
       ),
