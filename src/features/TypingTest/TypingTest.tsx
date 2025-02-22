@@ -5,7 +5,7 @@ import RestartButton from '../../components/RestartButton/RestartButton';
 import { TextCharacter } from '../../types/typing';
 import { Mode, Modes, TimeMode, WordsMode } from '../../types/configurationBar';
 import { SetState } from '../../types/common';
-import { fetchWords } from '../../api';
+import { fetchQuote, fetchWords } from '../../api';
 import { useFetch } from '../../hooks/useFetch';
 
 interface Props {
@@ -34,11 +34,37 @@ function TypingTest({ currentMode, setCurrentMode }: Props) {
     true
   );
 
+  const {
+    loading: quoteLoading,
+    data: quoteData,
+    error: quoteError,
+    refetch: getQuote,
+  } = useFetch(fetchQuote, true);
+
   useEffect(() => {
     if (wordsData?.data) {
       setTextToDisplay(wordsData.data);
     }
   }, [wordsData?.data]);
+
+  useEffect(() => {
+    if (quoteData?.data) {
+      setTextToDisplay(quoteData.data);
+    }
+  }, [quoteData?.data]);
+
+  function fetchText() {
+    if (currentMode.selectedMode === Modes.WORDS) {
+      console.log('words');
+      getWords();
+    }
+
+    if (currentMode.selectedMode === Modes.QUOTE) {
+      console.log('quote');
+
+      getQuote();
+    }
+  }
 
   const { currentLetterIndex, wpmResult, numberOfTypedWords, restart } =
     useTyping(textToDisplay, setTextToDisplay);
@@ -46,7 +72,7 @@ function TypingTest({ currentMode, setCurrentMode }: Props) {
   function restartTest() {
     restart();
     setTextToDisplay([]);
-    getWords();
+    fetchText();
   }
 
   useEffect(() => {
@@ -56,10 +82,15 @@ function TypingTest({ currentMode, setCurrentMode }: Props) {
 
     currentLetterIndex.current = 0;
 
-    if (currentMode.selectedMode === Modes.WORDS) {
-      getWords();
-    }
+    fetchText();
   }, [currentMode]);
+
+  console.log(
+    textToDisplay
+      .map((letter) => letter.value)
+      .join('')
+      .split(' ').length
+  );
 
   return (
     <div className="flex flex-col gap-10 items-center">

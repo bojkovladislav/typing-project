@@ -1,9 +1,9 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import { ResultData } from '../types/api';
 import { useTheme } from './useTheme';
 import { TextCharacter } from '../types/typing';
 
-export function useFetch(
+export function useFetch<D extends Array<unknown>>(
   fetchData: () => Promise<ResultData<string>>,
   initialLoading = false
 ) {
@@ -22,6 +22,8 @@ export function useFetch(
 
   const getData = useCallback(async () => {
     try {
+      setData(null);
+
       setLoading(true);
       setError(null);
 
