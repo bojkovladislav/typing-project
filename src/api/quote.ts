@@ -1,6 +1,16 @@
-const API_URL = 'method=getQuote&key=457653&format=json&lang=en';
+import axios from 'axios';
+import { apiMiddleware } from './apiMiddleware';
+
+const API_URL = 'https://api.gameofthronesquotes.xyz/v1/random';
+
+interface ResultData {
+  sentence: string;
+}
 
 export async function fetchQuote() {
-  try {
-  } catch (error) {}
+  return apiMiddleware(async () => {
+    const response = await axios.get(API_URL);
+
+    return (response.data as ResultData).sentence;
+  });
 }
