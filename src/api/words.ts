@@ -26,17 +26,6 @@ export async function fetchWords(
     return Math.floor((baseValue / 100) * percentage);
   }
 
-  // so I need to add punctuation.
-
-  // punctuation signs:
-
-  // , . - " ; '
-
-  // sample:
-
-  // 10 words
-  // generate positions of each
-
   function getRandomSigns(
     quantity: number,
     max: number,
@@ -70,19 +59,17 @@ export async function fetchWords(
     );
     const signs = getRandomSigns(
       numberOfPunctuationSigns,
-      words.length - 1,
+      punctuationSigns.length - 1,
       punctuationSigns
     );
 
-    return words
-      .map((word, index) => {
-        if (punctuationPositions.includes(index)) {
-          return getCorrectWordWithSign(word, signs.shift() as string);
-        }
+    return words.map((word, index) => {
+      if (punctuationPositions.includes(index)) {
+        return getCorrectWordWithSign(word, signs.shift() as string);
+      }
 
-        return word;
-      })
-      .join(' ');
+      return word;
+    });
   }
 
   function insertRandomNumbers(words: string[]) {
@@ -94,11 +81,9 @@ export async function fetchWords(
       words.length - 1
     );
 
-    return words
-      .map((word, index) =>
-        randomPositions.includes(index) ? randomNumbers.shift() : word
-      )
-      .join(' ');
+    return words.map((word, index) =>
+      randomPositions.includes(index) ? String(randomNumbers.shift()) : word
+    );
   }
 
   const resultData = {
@@ -114,14 +99,17 @@ export async function fetchWords(
     resultData.message = 'The data has been successfully fetched';
 
     const words = response.data;
+    let result = words;
 
     if (numbers) {
-      resultData.data = insertRandomNumbers(words);
-    } else if (punctuation) {
-      resultData.data = integratePunctuation(words);
-    } else {
-      resultData.data = response.data.join(' ');
+      result = insertRandomNumbers(result);
     }
+
+    if (punctuation) {
+      result = integratePunctuation(result);
+    }
+
+    resultData.data = result.join(' ');
   } catch (error) {
     const errorMessage =
       error instanceof Error
