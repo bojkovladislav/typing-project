@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { NumberOfWords } from '../types/configurationBar';
+import { apiMiddleware } from './apiMiddleware';
 
 const API_URL: string = 'https://random-word-api.vercel.app/api?words';
 
@@ -86,39 +87,20 @@ export async function fetchWords(
     );
   }
 
-  const resultData = {
-    error: '',
-    message: '',
-    data: '',
-  };
-
-  try {
+  return apiMiddleware(async () => {
     const preparedUrl = `${API_URL}=${numberOfWords}`;
     const response = await axios.get<string[]>(preparedUrl);
 
-    resultData.message = 'The data has been successfully fetched';
-
-    const words = response.data;
-    let result = words;
+    let words = response.data;
 
     if (numbers) {
-      result = insertRandomNumbers(result);
+      words = insertRandomNumbers(words);
     }
 
     if (punctuation) {
-      result = integratePunctuation(result);
+      words = integratePunctuation(words);
     }
 
-    resultData.data = result.join(' ');
-  } catch (error) {
-    const errorMessage =
-      error instanceof Error
-        ? error.message
-        : 'An unexpected error has occurred';
-
-    resultData.message = 'An error occurred while fetching data';
-    resultData.error = errorMessage;
-  }
-
-  return resultData;
+    return words.join(' ');
+  });
 }
