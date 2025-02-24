@@ -18,6 +18,7 @@ function TypingTest({ currentMode, setCurrentMode }: Props) {
   const [timer, setTimer] = useState<number>(
     (currentMode.additionalOptions as TimeMode).selectedTimeLimit || 60
   );
+  const wordsMode = currentMode.additionalOptions as WordsMode;
 
   const {
     loading: wordsLoading,
@@ -27,9 +28,9 @@ function TypingTest({ currentMode, setCurrentMode }: Props) {
   } = useFetch(
     () =>
       fetchWords(
-        (currentMode.additionalOptions as WordsMode).punctuation,
-        (currentMode.additionalOptions as WordsMode).numbers,
-        (currentMode.additionalOptions as WordsMode).selectedNumberOfWords
+        wordsMode.punctuation,
+        wordsMode.numbers,
+        wordsMode.selectedNumberOfWords
       ),
     true
   );

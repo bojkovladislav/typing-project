@@ -1,6 +1,6 @@
-import axios from 'axios';
 import { NumberOfWords } from '../types/configurationBar';
 import { apiMiddleware } from './apiMiddleware';
+import { getData } from '.';
 
 const API_URL: string = 'https://random-word-api.vercel.app/api?words';
 
@@ -89,7 +89,7 @@ export async function fetchWords(
 
   return apiMiddleware(async () => {
     const preparedUrl = `${API_URL}=${numberOfWords}`;
-    const response = await axios.get<string[]>(preparedUrl);
+    const response = await getData(preparedUrl);
 
     let words = response.data;
 
