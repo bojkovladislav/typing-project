@@ -86,13 +86,6 @@ function TypingTest({ currentMode, setCurrentMode }: Props) {
     fetchText();
   }, [currentMode]);
 
-  console.log(
-    textToDisplay
-      .map((letter) => letter.value)
-      .join('')
-      .split(' ').length
-  );
-
   return (
     <div className="flex flex-col gap-10 items-center">
       {wpmResult !== null || timer === 0 ? (
@@ -100,15 +93,17 @@ function TypingTest({ currentMode, setCurrentMode }: Props) {
           wpmResult || 0
         } words per minute!`}</p>
       ) : (
-        !wordsError && (
+        !wordsError &&
+        (quoteData?.data || wordsData?.data) && (
           <TypingField
-            text={textToDisplay}
             currentMode={currentMode}
             currentLetterIndex={currentLetterIndex.current}
             numberOfTypedWords={numberOfTypedWords}
             timer={timer}
             setTimer={setTimer}
             loading={wordsLoading}
+            quote={quoteData?.data}
+            text={textToDisplay}
           />
         )
       )}

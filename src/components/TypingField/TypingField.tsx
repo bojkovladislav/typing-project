@@ -6,13 +6,14 @@ import { SetState } from '../../types/common';
 import { defaultMode } from '../../constants';
 
 interface Props {
-  text: TextCharacter[];
   currentLetterIndex: number;
   currentMode: Mode;
   timer: number;
   numberOfTypedWords: number;
   setTimer: SetState<number>;
   loading: boolean;
+  text: TextCharacter[];
+  quote?: TextCharacter[];
 }
 
 function TypingField({
@@ -22,12 +23,23 @@ function TypingField({
   loading,
   numberOfTypedWords,
   timer,
+  quote,
   setTimer,
 }: Props) {
-  const words = text
-    .map((letter) => letter.value)
-    .join('')
-    .split(' ');
+  function getWordsFromLetters(text: TextCharacter[] | undefined) {
+    if (!text) return [];
+
+    return text
+      .map((letter) => letter.value)
+      .join('')
+      .split(' ');
+  }
+
+  const words = getWordsFromLetters(text);
+
+  const wordsInQuote = getWordsFromLetters(quote);
+
+  console.log(currentMode.selectedMode, wordsInQuote);
 
   function determineWordsLength() {
     const defaultLengths = (defaultMode.additionalOptions as WordsMode)
@@ -50,7 +62,9 @@ function TypingField({
 
   const wordsCounter = useMemo(() => {
     return `${numberOfTypedWords} / ${
-      (currentMode.additionalOptions as WordsMode).selectedNumberOfWords
+      currentMode.selectedMode === Modes.QUOTE
+        ? wordsInQuote.length
+        : words.length
     }`;
   }, [currentMode.additionalOptions, numberOfTypedWords]);
 
