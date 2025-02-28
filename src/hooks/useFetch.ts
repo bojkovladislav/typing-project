@@ -1,14 +1,14 @@
 import { useState, useCallback } from 'react';
 import { ResultData } from '../types/api';
 import { useTheme } from './useTheme';
-import { TextCharacter } from '../types/typing';
+import { TextData } from '../types/typing';
 
 export function useFetch(
   fetchData: () => Promise<ResultData<string>>,
   initialLoading = false
 ) {
   const [loading, setLoading] = useState(initialLoading);
-  const [data, setData] = useState<ResultData<TextCharacter[]> | null>(null);
+  const [data, setData] = useState<ResultData<TextData> | null>(null);
   const [error, setError] = useState<string | null>(null);
   const { currentTheme } = useTheme();
 
@@ -32,7 +32,13 @@ export function useFetch(
       if (response.error) {
         setError(response.error);
       } else {
-        setData({ ...response, data: normalizeText(response.data) });
+        setData({
+          ...response,
+          data: {
+            numberOfWords: response.data.split(' ').length,
+            text: normalizeText(response.data),
+          },
+        });
       }
     } catch (err) {
       setError('Something went wrong while fetching data!');

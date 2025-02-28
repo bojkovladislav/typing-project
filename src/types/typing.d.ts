@@ -5,3 +5,8 @@ interface TextCharacter {
   currentColor: ThemeCharacterCurrentColor;
   colors: ThemeColors['text'];
 }
+
+interface TextData {
+  numberOfWords: number;
+  text: TextCharacter[];
+}

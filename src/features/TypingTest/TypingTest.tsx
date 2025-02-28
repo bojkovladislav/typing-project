@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import TypingField from '../../components/TypingField/TypingField';
 import useTyping from '../../hooks/useTyping';
 import RestartButton from '../../components/RestartButton/RestartButton';
@@ -18,6 +18,8 @@ function TypingTest({ currentMode, setCurrentMode }: Props) {
   const [timer, setTimer] = useState<number>(
     (currentMode.additionalOptions as TimeMode).selectedTimeLimit || 60
   );
+  // const [currentNumberOfWords, setCurrentNumberOfWords] = useState(0);
+  const currentNumberOfWords = useRef(0);
   const wordsMode = currentMode.additionalOptions as WordsMode;
 
   const {
@@ -35,6 +37,8 @@ function TypingTest({ currentMode, setCurrentMode }: Props) {
     true
   );
 
+  console.log(currentNumberOfWords);
+
   const {
     loading: quoteLoading,
     data: quoteData,
@@ -44,25 +48,27 @@ function TypingTest({ currentMode, setCurrentMode }: Props) {
 
   useEffect(() => {
     if (wordsData?.data) {
-      setTextToDisplay(wordsData.data);
+      // setCurrentNumberOfWords(wordsData.data.numberOfWords);
+      currentNumberOfWords.current = wordsData.data.numberOfWords;
+      setTextToDisplay(wordsData.data.text);
     }
   }, [wordsData?.data]);
 
   useEffect(() => {
     if (quoteData?.data) {
-      setTextToDisplay(quoteData.data);
+      // setCurrentNumberOfWords(quoteData.data.numberOfWords);
+      currentNumberOfWords.current = quoteData.data.numberOfWords;
+
+      setTextToDisplay(quoteData.data.text);
     }
   }, [quoteData?.data]);
 
   function fetchText() {
     if (currentMode.selectedMode === Modes.WORDS) {
-      console.log('words');
       getWords();
     }
 
     if (currentMode.selectedMode === Modes.QUOTE) {
-      console.log('quote');
-
       getQuote();
     }
   }
@@ -86,6 +92,11 @@ function TypingTest({ currentMode, setCurrentMode }: Props) {
     fetchText();
   }, [currentMode]);
 
+  // What I need to get:
+
+  // Count words for both quotes and words modes
+  // Pass in words into the TypingField component, and make the data is up to date.
+
   return (
     <div className="flex flex-col gap-10 items-center">
       {wpmResult !== null || timer === 0 ? (
@@ -102,8 +113,8 @@ function TypingTest({ currentMode, setCurrentMode }: Props) {
             timer={timer}
             setTimer={setTimer}
             loading={wordsLoading}
-            quote={quoteData?.data}
             text={textToDisplay}
+            numberOfWords={currentNumberOfWords.current}
           />
         )
       )}

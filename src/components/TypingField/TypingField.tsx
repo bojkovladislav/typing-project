@@ -10,10 +10,10 @@ interface Props {
   currentMode: Mode;
   timer: number;
   numberOfTypedWords: number;
+  numberOfWords: number;
   setTimer: SetState<number>;
   loading: boolean;
   text: TextCharacter[];
-  quote?: TextCharacter[];
 }
 
 function TypingField({
@@ -22,8 +22,8 @@ function TypingField({
   currentMode,
   loading,
   numberOfTypedWords,
+  numberOfWords,
   timer,
-  quote,
   setTimer,
 }: Props) {
   function getWordsFromLetters(text: TextCharacter[] | undefined) {
@@ -36,10 +36,6 @@ function TypingField({
   }
 
   const words = getWordsFromLetters(text);
-
-  const wordsInQuote = getWordsFromLetters(quote);
-
-  console.log(currentMode.selectedMode, wordsInQuote);
 
   function determineWordsLength() {
     const defaultLengths = (defaultMode.additionalOptions as WordsMode)
@@ -61,11 +57,7 @@ function TypingField({
   }, [PEAK_NUMBER_OF_CHARACTERS]);
 
   const wordsCounter = useMemo(() => {
-    return `${numberOfTypedWords} / ${
-      currentMode.selectedMode === Modes.QUOTE
-        ? wordsInQuote.length
-        : words.length
-    }`;
+    return `${numberOfTypedWords} / ${numberOfWords}`;
   }, [currentMode.additionalOptions, numberOfTypedWords]);
 
   useEffect(() => {
