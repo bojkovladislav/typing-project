@@ -12,6 +12,3 @@ function Version() {
 }
 
 export default Version;
-
-// integrate a database (preferably mongoDB)
-// store user information, scores and other related stuff
