@@ -35,7 +35,7 @@ function App() {
           />
         </div>
 
-        <TypingTest currentMode={currentMode} setCurrentMode={setCurrentMode} />
+        <TypingTest currentMode={currentMode} />
 
         <Hints />
 

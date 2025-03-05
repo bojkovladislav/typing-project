@@ -58,7 +58,7 @@ function TypingField({
 
   const wordsCounter = useMemo(() => {
     return `${numberOfTypedWords} / ${numberOfWords}`;
-  }, [currentMode.additionalOptions, numberOfTypedWords]);
+  }, [currentMode.additionalOptions, numberOfTypedWords, numberOfWords]);
 
   useEffect(() => {
     if (currentMode.selectedMode !== Modes.TIME || timer === 0) return;
