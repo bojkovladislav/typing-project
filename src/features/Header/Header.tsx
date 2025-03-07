@@ -3,6 +3,7 @@ import {
   SettingOutlined,
   UserOutlined,
 } from '@ant-design/icons';
+import { Link } from 'react-router';
 
 function Header() {
   return (
@@ -15,9 +16,9 @@ function Header() {
 
         <SettingOutlined className="cursor-pointer" />
       </div>
-      <div>
+      <Link to="/login" className="default-clear">
         <UserOutlined className="cursor-pointer" />
-      </div>
+      </Link>
     </div>
   );
 }
