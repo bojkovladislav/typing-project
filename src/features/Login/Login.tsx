@@ -1,5 +1,16 @@
+import BaseForm from '../../components/ui/BaseForm/BaseForm';
+
 function Login() {
-  return <div>It is a login page</div>;
+  return (
+    <BaseForm
+      values={{
+        username: '',
+        email: '',
+        password: '',
+      }}
+      onSubmit={() => console.log('submitted')}
+    />
+  );
 }
 
 export default Login;
