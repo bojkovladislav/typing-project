@@ -1,28 +1,52 @@
 import { useFormik } from 'formik';
+import { ReactNode } from 'react';
+import { useTheme } from '../../../hooks/useTheme';
+import Button from '../Button/Button';
 
 interface Props {
   values: Record<string, string>;
   onSubmit: () => void;
   submitButtonText?: string;
+  additionalContent?: ReactNode;
 }
 
-function BaseForm({ values, onSubmit, submitButtonText }: Props) {
+function BaseForm({
+  values,
+  onSubmit,
+  submitButtonText,
+  additionalContent,
+}: Props) {
   const formik = useFormik({
     initialValues: values,
     onSubmit,
   });
 
-  return (
-    <form onSubmit={formik.handleSubmit} className="flex flex-col gap-2">
-      {Object.keys(values).map((key) => (
-        <input
-          key={key}
-          placeholder={key}
-          className="w-full p-2 bg-black text-white border border-gray-600 rounded-md outline-none focus:border-gray-400"
-        />
-      ))}
+  const { currentTheme } = useTheme();
 
-      <button>{submitButtonText || 'Submit'}</button>
+  return (
+    <form onSubmit={formik.handleSubmit} className="flex flex-col gap-5">
+      <div className="flex flex-col gap-3">
+        {Object.keys(values).map((key) => (
+          <input
+            key={key}
+            placeholder={key}
+            className="w-full p-2 rounded-md outline-none"
+            style={{
+              color: currentTheme.text.neutral,
+              backgroundColor: currentTheme.interface.secondaryColor,
+              border: `1px solid ${currentTheme.interface.tertiaryColor}`,
+            }}
+          />
+        ))}
+      </div>
+
+      {additionalContent && additionalContent}
+
+      <Button
+        text={submitButtonText || 'Submit'}
+        action={() => console.log('Submitted!')}
+        fill
+      />
     </form>
   );
 }

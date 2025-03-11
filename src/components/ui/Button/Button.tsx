@@ -1,6 +1,7 @@
 import { CSSProperties, ReactNode } from 'react';
 import { useTheme } from '../../../hooks/useTheme';
 import './Button.less';
+import { IconPosition } from '../../../types/enums';
 
 interface ButtonProps {
   text?: string;
@@ -11,7 +12,7 @@ interface ButtonProps {
   fill?: boolean;
   hoverEffect?: boolean;
   icon?: ReactNode;
-  iconPosition?: 'start' | 'end';
+  iconPosition?: IconPosition;
   preventDefault?: boolean;
 }
 
@@ -24,7 +25,7 @@ function Button({
   additionalStyles,
   hoverEffect,
   tabIndex,
-  iconPosition = 'start',
+  iconPosition = IconPosition.START,
   icon,
 }: ButtonProps) {
   const { currentTheme } = useTheme();
@@ -51,7 +52,8 @@ function Button({
         <div
           className="flex gap-2"
           style={{
-            flexDirection: iconPosition === 'start' ? 'row' : 'row-reverse',
+            flexDirection:
+              iconPosition === IconPosition.START ? 'row' : 'row-reverse',
           }}
         >
           {icon}
