@@ -9,7 +9,6 @@ import Hints from './features/Hints/Hints';
 import Modal from './components/ui/Modal/Modal';
 import ThemesSelection from './features/ThemesSelection/ThemesSelection';
 import ChooseTheme from './components/ChooseTheme/ChooseTheme';
-import { ThemeProvider } from './contexts/ThemeContext';
 import Header from './features/Header/Header';
 import Version from './features/Version/Version';
 
@@ -24,33 +23,31 @@ function App() {
   }
 
   return (
-    <ThemeProvider>
-      <div className="flex flex-col gap-60 h-screen">
-        <div className="flex flex-col gap-10">
-          <Header />
+    <div className="flex flex-col gap-60 h-screen">
+      <div className="flex flex-col gap-10">
+        <Header />
 
-          <ConfigurationBar
-            currentMode={currentMode}
-            setCurrentMode={setCurrentMode}
-          />
-        </div>
-
-        <TypingTest currentMode={currentMode} />
-
-        <Hints />
-
-        <Modal
-          open={themeModalOpen}
-          handleClose={handleModalClose}
-          title="Theme"
-          triggerButton={<ChooseTheme action={() => setThemeModalOpen(true)} />}
-        >
-          <ThemesSelection handleModalClose={handleModalClose} />
-        </Modal>
-
-        <Version />
+        <ConfigurationBar
+          currentMode={currentMode}
+          setCurrentMode={setCurrentMode}
+        />
       </div>
-    </ThemeProvider>
+
+      <TypingTest currentMode={currentMode} />
+
+      <Hints />
+
+      <Modal
+        open={themeModalOpen}
+        handleClose={handleModalClose}
+        title="Theme"
+        triggerButton={<ChooseTheme action={() => setThemeModalOpen(true)} />}
+      >
+        <ThemesSelection handleModalClose={handleModalClose} />
+      </Modal>
+
+      <Version />
+    </div>
   );
 }
 
