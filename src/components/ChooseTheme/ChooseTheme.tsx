@@ -1,6 +1,7 @@
 import { FormatPainterOutlined } from '@ant-design/icons';
 import Button from '../ui/Button/Button';
 import { useTheme } from '../../hooks/useTheme';
+import { IconPosition } from '../../types/enums';
 
 interface Props {
   action: () => void;
@@ -19,7 +20,7 @@ function ChooseTheme({ action }: Props) {
       action={action}
       tabIndex={-1}
       icon={<FormatPainterOutlined />}
-      iconPosition="end"
+      iconPosition={IconPosition.END}
     />
   );
 }
