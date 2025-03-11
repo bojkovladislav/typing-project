@@ -3,3 +3,8 @@ export enum Modes {
   TIME = 'time',
   QUOTE = 'quote',
 }
+
+export enum IconPosition {
+  START = 'start',
+  END = 'end',
+}
