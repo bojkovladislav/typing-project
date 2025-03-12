@@ -20,7 +20,7 @@ function ChooseTheme({ action }: Props) {
       action={action}
       tabIndex={-1}
       icon={<FormatPainterOutlined />}
-      iconPosition={IconPosition.END}
+      iconPosition={IconPosition.START}
     />
   );
 }
