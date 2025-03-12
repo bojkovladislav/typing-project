@@ -16,7 +16,7 @@ function Header() {
 
         <SettingOutlined className="cursor-pointer" />
       </div>
-      <Link to="/login" className="default-clear">
+      <Link to="/authorize" className="default-clear">
         <UserOutlined className="cursor-pointer" />
       </Link>
     </div>
