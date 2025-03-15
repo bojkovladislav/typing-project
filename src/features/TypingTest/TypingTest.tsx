@@ -1,4 +1,4 @@
-import { useEffect, useInsertionEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import TypingField from '../../components/TypingField/TypingField';
 import useTyping from '../../hooks/useTyping';
 import RestartButton from '../../components/RestartButton/RestartButton';
