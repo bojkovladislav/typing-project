@@ -11,7 +11,6 @@ export function useFetch(
   const [data, setData] = useState<ResultData<TextData> | null>(null);
   const [error, setError] = useState<string | null>(null);
   const { currentTheme } = useTheme();
-
   function normalizeText(text: string) {
     return text.split('').map((letter) => ({
       value: letter,

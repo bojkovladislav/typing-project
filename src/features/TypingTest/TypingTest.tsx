@@ -2,17 +2,17 @@ import { useEffect, useState } from 'react';
 import TypingField from '../../components/TypingField/TypingField';
 import useTyping from '../../hooks/useTyping';
 import RestartButton from '../../components/RestartButton/RestartButton';
-import { TextCharacter } from '../../types/typing';
 import { Mode, Modes, TimeMode, WordsMode } from '../../types/configurationBar';
 import { fetchQuote, fetchWords } from '../../api';
 import { useFetch } from '../../hooks/useFetch';
+import { useTypingContext } from '../../contexts/TypingContext';
 
 interface Props {
   currentMode: Mode;
 }
 
 function TypingTest({ currentMode }: Props) {
-  const [textToDisplay, setTextToDisplay] = useState<TextCharacter[]>([]);
+  const { text, setText } = useTypingContext();
   const [timer, setTimer] = useState<number>(
     (currentMode.additionalOptions as TimeMode).selectedTimeLimit || 60
   );
@@ -45,7 +45,7 @@ function TypingTest({ currentMode }: Props) {
   useEffect(() => {
     if (wordsData?.data) {
       setCurrentNumberOfWords(wordsData.data.numberOfWords);
-      setTextToDisplay(wordsData.data.text);
+      setText(wordsData.data.text);
     }
 
     setIsDataLoading(wordsLoading);
@@ -54,7 +54,7 @@ function TypingTest({ currentMode }: Props) {
   useEffect(() => {
     if (quoteData?.data) {
       setCurrentNumberOfWords(quoteData.data.numberOfWords);
-      setTextToDisplay(quoteData.data.text);
+      setText(quoteData.data.text);
     }
 
     setIsDataLoading(quoteLoading);
@@ -71,11 +71,11 @@ function TypingTest({ currentMode }: Props) {
   }
 
   const { currentLetterIndex, wpmResult, numberOfTypedWords, restart } =
-    useTyping(textToDisplay, setTextToDisplay);
+    useTyping();
 
   function restartTest() {
     restart();
-    setTextToDisplay([]);
+    setText([]);
     fetchText();
   }
 
@@ -105,7 +105,7 @@ function TypingTest({ currentMode }: Props) {
             timer={timer}
             setTimer={setTimer}
             loading={isDataLoading}
-            text={textToDisplay}
+            text={text}
             numberOfWords={currentNumberOfWords}
           />
         )

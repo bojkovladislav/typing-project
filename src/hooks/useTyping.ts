@@ -1,7 +1,8 @@
 import { MutableRefObject, useEffect, useRef, useState } from 'react';
-import { SetState } from '../types/common';
 import { TextCharacter } from '../types/typing';
 import { KeysToIgnore } from '../constants';
+import { useTypingContext } from '../contexts/TypingContext';
+import { SetState } from '../types/common';
 
 interface ReturnValues {
   currentLetterIndex: MutableRefObject<number>;
@@ -10,16 +11,17 @@ interface ReturnValues {
   restart: () => void;
 }
 
-export default function useTyping(
-  text: TextCharacter[],
-  setText: SetState<TextCharacter[]>
-): ReturnValues {
+export default function useTyping(): ReturnValues {
   const currentLetterIndexRef = useRef(0);
   const [currentSecond, setCurrentSecond] = useState(0);
   const [wpmResult, setWpmResult] = useState<number | null>(null);
   const [endIndexesOfTypedWords, setEndIndexesOfTypedWords] = useState<
     number[]
   >([]);
+  const { text, setText } = useTypingContext() as {
+    text: TextCharacter[];
+    setText: SetState<TextCharacter[]>;
+  };
 
   function restart() {
     currentLetterIndexRef.current = 0;
@@ -123,18 +125,18 @@ export default function useTyping(
           if (theWordIsCorrect) return;
         }
 
-        setText((prevText) => {
+        setText((prevText: TextCharacter[]): TextCharacter[] => {
           currentLetterIndexRef.current = startIndex;
 
-          const updatedText = prevText.map((letter, letIndex) => ({
-            ...letter,
-            currentColor:
-              letIndex <= updatedIndex && letIndex >= startIndex
-                ? letter.colors.neutral
-                : letter.currentColor,
-          }));
-
-          return updatedText;
+          return prevText.map(
+            (letter, letIndex): TextCharacter => ({
+              ...letter, // Preserve all properties
+              currentColor:
+                letIndex <= updatedIndex && letIndex >= startIndex
+                  ? letter.colors.neutral
+                  : letter.currentColor,
+            })
+          );
         });
 
         return;
