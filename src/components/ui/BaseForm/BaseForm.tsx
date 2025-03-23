@@ -2,10 +2,11 @@ import { ErrorMessage, Field, Form, Formik, FormikValues } from 'formik';
 import { ReactNode } from 'react';
 import { useTheme } from '../../../hooks/useTheme';
 import Button from '../Button/Button';
-import * as Yup from 'yup';
 import { CheckOutlined } from '@ant-design/icons';
+import Joi from 'joi';
+import { joiFormikAdapter } from 'joi-formik-adapter';
 
-interface Props<T extends Yup.AnyObjectSchema, V> {
+interface Props<T extends Joi.ObjectSchema, V> {
   values: V;
   onSubmit: (values: V) => void;
   validation: T;
@@ -14,7 +15,7 @@ interface Props<T extends Yup.AnyObjectSchema, V> {
   checkboxName?: string;
 }
 
-function BaseForm<T extends Yup.AnyObjectSchema, V extends FormikValues>({
+function BaseForm<T extends Joi.ObjectSchema, V extends FormikValues>({
   values,
   onSubmit,
   submitButtonText,
@@ -27,36 +28,33 @@ function BaseForm<T extends Yup.AnyObjectSchema, V extends FormikValues>({
   return (
     <Formik
       initialValues={{ ...values }}
-      validationSchema={validation}
+      validationSchema={joiFormikAdapter(validation)}
       onSubmit={onSubmit}
     >
       {({ errors, touched }) => (
         <Form className="flex flex-col gap-5">
           <div className="flex flex-col gap-3">
-            {Object.keys(values).map((key) => {
-              return (
-                <div key={key}>
-                  <Field
+            {Object.keys(values).map((key) => (
+              <div key={key}>
+                <Field
+                  name={key}
+                  placeholder={key}
+                  className="w-full p-2 rounded-md outline-none"
+                  style={{
+                    color: currentTheme.text.neutral,
+                    backgroundColor: currentTheme.interface.secondaryColor,
+                    border: `1px solid ${currentTheme.interface.tertiaryColor}`,
+                  }}
+                />
+                {errors[key] && touched[key] ? (
+                  <ErrorMessage
                     name={key}
-                    placeholder={key}
-                    className="w-full p-2 rounded-md outline-none"
-                    style={{
-                      color: currentTheme.text.neutral,
-                      backgroundColor: currentTheme.interface.secondaryColor,
-                      border: `1px solid ${currentTheme.interface.tertiaryColor}`,
-                    }}
+                    component="div"
+                    className="text-red-500"
                   />
-
-                  {errors[key] && touched[key] ? (
-                    <ErrorMessage
-                      name={key}
-                      component="div"
-                      className="text-red-500"
-                    />
-                  ) : null}
-                </div>
-              );
-            })}
+                ) : null}
+              </div>
+            ))}
           </div>
 
           {checkboxName ? (
