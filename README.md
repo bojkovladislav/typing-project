@@ -11,3 +11,5 @@ A sleek and interactive typing speed test application that helps users improve t
 - **Live Accuracy Feedback**: Correct letters are highlighted in green, incorrect in red.
 - **Theme Selection**: Choose from a variety of themes to personalize your experience.
 - **Keyboard Shortcuts**: Restart the test quickly using `Tab + Enter`.
+- **User Authentication**: Sign in with **Email**, **Google**, or **GitHub**.
+- **Data Persistence**: All your test results and preferences are securely saved in the database.
