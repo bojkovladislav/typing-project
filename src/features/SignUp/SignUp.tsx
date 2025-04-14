@@ -1,10 +1,11 @@
 import { UserAddOutlined } from '@ant-design/icons';
 import BaseForm from '../../components/ui/BaseForm/BaseForm';
 import FormTitle from '../../components/ui/FormTitle/FormTitle';
-import { SignUpSchema } from '../../validations/SignUpSchema';
+import { signupSchema } from '../../../../shared-types/src/validationSchemas';
+import { SignUpRequest } from '../../../../shared-types/src/types';
 
 function SignUp() {
-  function onSubmit(values: SignUpSchema) {
+  function onSubmit(values: SignUpRequest) {
     console.log('values submitted: ', values);
   }
 
@@ -20,7 +21,7 @@ function SignUp() {
           password: '',
           verifyPassword: '',
         }}
-        validation={SignUpSchema}
+        validation={signupSchema}
         onSubmit={onSubmit}
         submitButtonText="Sign Up"
         submitButtonIcon={<UserAddOutlined />}

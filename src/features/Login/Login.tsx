@@ -5,7 +5,6 @@ import {
 } from '@ant-design/icons';
 import FormTitle from '../../components/ui/FormTitle/FormTitle';
 import BaseForm from '../../components/ui/BaseForm/BaseForm';
-import { LoginSchema } from '../../validations/LoginSchema';
 import AuthOption from '../../components/AuthOption/AuthOption';
 import Separator from '../../components/Separator/Separator';
 import { Link, useNavigate } from 'react-router';
@@ -48,7 +47,7 @@ function Login() {
           email: '',
           password: '',
         }}
-        validation={LoginSchema}
+        validation={loginSchema}
         onSubmit={onSubmit}
         submitButtonText="Login"
         submitButtonIcon={<LoginOutlined />}
