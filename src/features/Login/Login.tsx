@@ -10,6 +10,8 @@ import Separator from '../../components/Separator/Separator';
 import { Link, useNavigate } from 'react-router';
 import { useEffect } from 'react';
 import { getUrlParts, setCookie } from '../../utils/cookies';
+import { LoginSchema } from '../../validations/LoginSchema';
+import { loginSchema } from '../../../../shared-types/src/validationSchemas';
 
 function Login() {
   const navigate = useNavigate();
