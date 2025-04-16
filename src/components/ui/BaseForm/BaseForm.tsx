@@ -3,32 +3,31 @@ import { ReactNode } from 'react';
 import { useTheme } from '../../../hooks/useTheme';
 import Button from '../Button/Button';
 import { CheckOutlined } from '@ant-design/icons';
-import Joi from 'joi';
-import { joiFormikAdapter } from 'joi-formik-adapter';
+import * as Yup from 'yup';
 
-interface Props<T extends Joi.ObjectSchema, V> {
+interface Props<V extends FormikValues> {
   values: V;
   onSubmit: (values: V) => void;
-  validation: T;
+  validation: Yup.ObjectSchema<any>;
   submitButtonText?: string;
   submitButtonIcon?: ReactNode;
   checkboxName?: string;
 }
 
-function BaseForm<T extends Joi.ObjectSchema, V extends FormikValues>({
+function BaseForm<V extends FormikValues>({
   values,
   onSubmit,
   submitButtonText,
   checkboxName,
   submitButtonIcon,
   validation,
-}: Props<T, V>) {
+}: Props<V>) {
   const { currentTheme } = useTheme();
 
   return (
     <Formik
       initialValues={{ ...values }}
-      validationSchema={joiFormikAdapter(validation)}
+      validationSchema={validation}
       onSubmit={onSubmit}
     >
       {({ errors, touched }) => (

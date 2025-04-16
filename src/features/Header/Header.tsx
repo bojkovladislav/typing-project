@@ -4,16 +4,16 @@ import {
   UserOutlined,
 } from '@ant-design/icons';
 import { Link } from 'react-router';
-import { getCookie, removeCookie } from '../../utils/cookies';
+// import { getCookie, removeCookie } from '../../utils/cookies';
 
 function Header() {
-  const accessToken = getCookie('google_access_token');
+  // const accessToken = getCookie('google_access_token');
 
-  function handleAuth() {
-    if (accessToken) {
-      removeCookie('google_access_token');
-    }
-  }
+  // function handleAuth() {
+  //   if (accessToken) {
+  //     removeCookie('google_access_token');
+  //   }
+  // }
 
   return (
     <div className="flex justify-between">
