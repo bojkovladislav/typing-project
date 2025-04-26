@@ -1,6 +1,6 @@
 import { NumberOfWords } from '../types/configurationBar';
-import { apiMiddleware } from './apiMiddleware';
 import { getData } from '.';
+import { apiOperations } from './apiMiddleware';
 
 const API_URL: string = 'https://random-word-api.vercel.app/api?words';
 
@@ -9,6 +9,8 @@ export async function fetchWords(
   numbers: boolean,
   numberOfWords: NumberOfWords[number]
 ) {
+  const api = new apiOperations();
+
   function generateRandomNumbers(
     quantity: number,
     max: number,
@@ -87,7 +89,7 @@ export async function fetchWords(
     );
   }
 
-  return apiMiddleware(async () => {
+  return await api.GET(async () => {
     const preparedUrl = `${API_URL}=${numberOfWords}`;
     const response = await getData(preparedUrl);
 

@@ -23,6 +23,10 @@ function Login() {
     const googleAccessToken = getUrlParts()['google_access_token'];
     const githubAccessToken = getUrlParts()['github_access_token'];
 
+    console.log(googleAccessToken, githubAccessToken);
+
+    if (!githubAccessToken && !googleAccessToken) return;
+
     if (googleAccessToken) {
       setCookie('google_access_token', googleAccessToken, 1);
     }
