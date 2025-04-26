@@ -5,17 +5,18 @@ import { GoogleAuthData, UserData } from '../../types/api';
 
 function Profile() {
   const [userData, setUserData] = useState<UserData | null>(null);
-  const accessToken = getCookie('google_access_token');
+  const googleAccessToken = getCookie('google_access_token');
+  const githubAccessToken = getCookie('github_access_token');
 
-  async function fetchUserData() {
+  async function fetchGoogleUserData() {
     try {
-      if (accessToken) {
-        if (accessToken) {
+      if (googleAccessToken) {
+        if (googleAccessToken) {
           const response = await axios.get<GoogleAuthData>(
             'https://www.googleapis.com/oauth2/v2/userinfo',
             {
               headers: {
-                Authorization: `Bearer ${accessToken}`,
+                Authorization: `Bearer ${googleAccessToken}`,
               },
             }
           );
@@ -37,9 +38,36 @@ function Profile() {
     }
   }
 
+  async function fetchGithubUserData() {
+    try {
+      if (githubAccessToken) {
+        const response = await axios.get('https://api.github.com/user', {
+          headers: {
+            Authorization: `Bearer ${githubAccessToken}`,
+            Accept: 'application/vnd.github+json',
+          },
+        });
+
+        const { id, login, email, avatar_url } = response.data;
+
+        const userData: UserData = {
+          id,
+          username: login,
+          email,
+          picture: avatar_url,
+        };
+
+        setUserData(userData);
+      }
+    } catch (error) {
+      console.error('Error fetching GitHub user data:', error);
+    }
+  }
+
   useEffect(() => {
-    fetchUserData();
-  }, [accessToken]);
+    fetchGoogleUserData();
+    fetchGithubUserData();
+  }, [googleAccessToken, githubAccessToken]);
 
   return (
     <div>

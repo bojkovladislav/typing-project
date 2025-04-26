@@ -20,13 +20,18 @@ function Login() {
   }
 
   useEffect(() => {
-    const accessToken = getUrlParts()['access_token'];
+    const googleAccessToken = getUrlParts()['google_access_token'];
+    const githubAccessToken = getUrlParts()['github_access_token'];
 
-    if (accessToken) {
-      setCookie('google_access_token', accessToken, 1);
-
-      navigate('/profile');
+    if (googleAccessToken) {
+      setCookie('google_access_token', googleAccessToken, 1);
     }
+
+    if (githubAccessToken) {
+      setCookie('github_access_token', githubAccessToken, 1);
+    }
+
+    navigate('/profile');
   }, []);
 
   return (
@@ -34,11 +39,19 @@ function Login() {
       <FormTitle title="login" icon={<LoginOutlined />} />
 
       <div className="flex gap-3">
-        <Link to="http://localhost:3000/oauth2/google">
+        <Link
+          to="http://localhost:3000/oauth2/google"
+          className="block w-full text-white default-clear"
+        >
           <AuthOption authOption={<GoogleOutlined />} action={() => {}} />
         </Link>
 
-        <AuthOption authOption={<GithubOutlined />} action={() => {}} />
+        <Link
+          to="http://localhost:3000/oauth2/github"
+          className="block w-full text-white default-clear"
+        >
+          <AuthOption authOption={<GithubOutlined />} action={() => {}} />
+        </Link>
       </div>
 
       <Separator />
