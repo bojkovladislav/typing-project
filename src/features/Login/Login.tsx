@@ -11,12 +11,19 @@ import { Link, useNavigate } from 'react-router';
 import { useEffect } from 'react';
 import { getUrlParts, setCookie } from '../../utils/cookies';
 import { loginSchema, LoginSchema } from '../../validations/LoginSchema';
+import { login } from '../../api/auth';
 
 function Login() {
   const navigate = useNavigate();
 
-  function onSubmit(values: LoginSchema) {
-    console.log("You've been successfully authenticated! ", values);
+  async function onSubmit(values: LoginSchema) {
+    const response = await login(values);
+
+    if (typeof response.data === 'object') {
+      console.log('Response after sending data: ', response.data.token);
+    } else {
+      console.log('An Error has occurred!');
+    }
   }
 
   useEffect(() => {

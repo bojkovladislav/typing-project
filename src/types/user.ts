@@ -15,3 +15,8 @@ export interface UserLoginData {
   email: string;
   password: string;
 }
+
+export interface AuthorizedUserData {
+  username: string;
+  email: string;
+}

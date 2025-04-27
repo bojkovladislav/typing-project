@@ -1,5 +1,10 @@
 import { sendData } from '.';
-import { CreatedUser, UserLoginData, UserSignupData } from '../types/user';
+import {
+  AuthorizedUserData,
+  CreatedUser,
+  UserLoginData,
+  UserSignupData,
+} from '../types/user';
 import { apiOperations } from './apiMiddleware';
 
 const BASE_URL = 'http://localhost:3000/api/user';
@@ -18,6 +23,11 @@ export async function signup(data: UserSignupData) {
 
 export async function login(data: UserLoginData) {
   return await api.POST(async () => {
-    return await sendData(`${BASE_URL}/login`, data);
+    const response = await sendData<
+      { token: string; user: AuthorizedUserData } | undefined,
+      UserLoginData
+    >(`${BASE_URL}/login`, data);
+
+    return response.data;
   });
 }
