@@ -11,23 +11,24 @@ const BASE_URL = 'http://localhost:3000/api/user';
 
 const api = new apiOperations();
 
-export async function signup(data: UserSignupData) {
+async function authenticate<GivenData, ResponseUserData>(
+  data: GivenData,
+  method: 'login' | 'signup'
+) {
   return await api.POST(async () => {
     const response = await sendData<
-      { token: string; user: CreatedUser } | undefined,
-      UserSignupData
-    >(`${BASE_URL}/signup`, data);
+      { token: string; user: ResponseUserData } | undefined,
+      GivenData
+    >(`${BASE_URL}/${method}`, data);
+
     return response.data;
   });
 }
 
-export async function login(data: UserLoginData) {
-  return await api.POST(async () => {
-    const response = await sendData<
-      { token: string; user: AuthorizedUserData } | undefined,
-      UserLoginData
-    >(`${BASE_URL}/login`, data);
+export async function signup(data: UserSignupData) {
+  return await authenticate<UserSignupData, CreatedUser>(data, 'signup');
+}
 
-    return response.data;
-  });
+export async function login(data: UserLoginData) {
+  return await authenticate<UserLoginData, AuthorizedUserData>(data, 'login');
 }
