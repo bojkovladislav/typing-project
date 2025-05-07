@@ -15,9 +15,9 @@ async function authenticate<GivenData, ResponseUserData>(
   data: GivenData,
   method: 'login' | 'signup'
 ) {
-  return await api.POST(async () => {
+  return await api.POST<{ token: string; user: ResponseUserData }>(async () => {
     const response = await sendData<
-      { token: string; user: ResponseUserData } | undefined,
+      { token: string; user: ResponseUserData },
       GivenData
     >(`${BASE_URL}/${method}`, data);
 

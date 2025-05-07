@@ -8,22 +8,31 @@ import BaseForm from '../../components/ui/BaseForm/BaseForm';
 import AuthOption from '../../components/AuthOption/AuthOption';
 import Separator from '../../components/Separator/Separator';
 import { Link, useNavigate } from 'react-router';
-import { useEffect } from 'react';
+import { useContext, useEffect } from 'react';
 import { getUrlParts, setCookie } from '../../utils/cookies';
 import { loginSchema, LoginSchema } from '../../validations/LoginSchema';
 import { login } from '../../api/auth';
+import { MESSAGE_STATUS } from '../../types/notification';
+import {
+  NotificationContext,
+  NotificationContextType,
+} from '../../contexts/NotificationContext';
 
 function Login() {
+  const { add } = useContext(NotificationContext) as NotificationContextType;
+
   const navigate = useNavigate();
 
   async function onSubmit(values: LoginSchema) {
     const response = await login(values);
 
-    if (typeof response.data === 'object') {
-      console.log('Response after sending data: ', response.data.token);
-    } else {
-      console.log('An Error has occurred!');
-    }
+    add({
+      message: response.error,
+      status: MESSAGE_STATUS.FAIL,
+      position: {
+        centered: true,
+      },
+    });
   }
 
   useEffect(() => {

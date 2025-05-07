@@ -1,7 +1,7 @@
 export interface ApiResponse<T> {
   error: string;
   message: string;
-  data: T | string | undefined;
+  data: T;
 }
 
 export class apiOperations {
@@ -20,7 +20,7 @@ export class apiOperations {
     const resultData: ApiResponse<T> = {
       error: '',
       message: '',
-      data: '',
+      data: {} as T,
     };
 
     try {

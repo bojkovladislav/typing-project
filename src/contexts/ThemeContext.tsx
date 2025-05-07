@@ -18,7 +18,6 @@ export const ThemeContext = createContext<ThemeContextType | undefined>(
 interface Props {
   children: ReactNode;
 }
-
 export function ThemeProvider({ children }: Props) {
   function getTheme(): ThemeColors {
     const themeFromLocalStorage: ThemeColors | null =
