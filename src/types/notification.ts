@@ -1,7 +1,8 @@
 export enum MESSAGE_STATUS {
-  FAIL = 'red',
-  SUCCESS = 'green',
-  PENDING = 'yellow',
+  DANGER = 'danger',
+  SUCCESS = 'success',
+  WARNING = 'warning',
+  INFO = 'info',
 }
 
 export enum NotificationXLocation {

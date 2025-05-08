@@ -1,10 +1,12 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { CSSProperties } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import {
   MessageOptions,
   NotificationXLocation,
   NotificationYLocation,
 } from '../../types/notification';
+import { notificationStyles, statusIcons } from './notificationStyles';
 
 interface NotificationProps extends MessageOptions {
   onClose: () => void;
@@ -16,16 +18,19 @@ function Notification({
   position,
   onClose,
 }: NotificationProps) {
+  const [visible, setVisible] = useState(true);
+
   useEffect(() => {
     const timer = setTimeout(() => {
-      onClose();
+      setVisible(false);
+      setTimeout(onClose, 300);
     }, 2000);
 
     return () => clearTimeout(timer);
   }, [onClose]);
 
   const baseStyle: CSSProperties = {
-    backgroundColor: status,
+    ...notificationStyles[status],
     ...(position.centered
       ? {
           left: '50%',
@@ -39,9 +44,21 @@ function Notification({
   };
 
   return (
-    <div className="absolute p-2 rounded shadow text-white" style={baseStyle}>
-      {message}
-    </div>
+    <AnimatePresence>
+      {visible && (
+        <motion.div
+          className="absolute p-2 rounded text-sm font-light font-mono cursor-pointer flex items-center gap-2"
+          style={baseStyle}
+          initial={{ y: -40, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          exit={{ y: -40, opacity: 0 }}
+          transition={{ duration: 0.5, ease: 'easeOut' }}
+        >
+          {statusIcons[status]}
+          {message}
+        </motion.div>
+      )}
+    </AnimatePresence>
   );
 }
 

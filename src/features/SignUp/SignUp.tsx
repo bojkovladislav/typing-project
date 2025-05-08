@@ -20,7 +20,7 @@ function SignUp() {
 
     add({
       message: response.error,
-      status: MESSAGE_STATUS.FAIL,
+      status: MESSAGE_STATUS.DANGER,
       position: {
         centered: true,
       },
