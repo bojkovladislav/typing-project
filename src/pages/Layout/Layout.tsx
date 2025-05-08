@@ -1,4 +1,4 @@
-import { useContext, useState } from 'react';
+import { useState } from 'react';
 import { Outlet } from 'react-router';
 import Hints from '../../features/Hints/Hints';
 import Modal from '../../components/ui/Modal/Modal';
@@ -7,16 +7,11 @@ import ThemesSelection from '../../features/ThemesSelection/ThemesSelection';
 import Version from '../../features/Version/Version';
 import Header from '../../features/Header/Header';
 import Notification from '../../components/Notification/Notification';
-import {
-  NotificationContext,
-  NotificationContextType,
-} from '../../contexts/NotificationContext';
+import { useNotification } from '../../hooks/useNotification';
 
 function Layout() {
   const [themeModalOpen, setThemeModalOpen] = useState(false);
-  const { options, add } = useContext(
-    NotificationContext
-  ) as NotificationContextType;
+  const { options, add } = useNotification();
 
   function handleModalClose() {
     setThemeModalOpen(false);

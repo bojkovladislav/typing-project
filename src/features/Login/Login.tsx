@@ -8,18 +8,15 @@ import BaseForm from '../../components/ui/BaseForm/BaseForm';
 import AuthOption from '../../components/AuthOption/AuthOption';
 import Separator from '../../components/Separator/Separator';
 import { Link, useNavigate } from 'react-router';
-import { useContext, useEffect } from 'react';
+import { useEffect } from 'react';
 import { getUrlParts, setCookie } from '../../utils/cookies';
 import { loginSchema, LoginSchema } from '../../validations/LoginSchema';
 import { login } from '../../api/auth';
 import { MESSAGE_STATUS } from '../../types/notification';
-import {
-  NotificationContext,
-  NotificationContextType,
-} from '../../contexts/NotificationContext';
+import { useNotification } from '../../hooks/useNotification';
 
 function Login() {
-  const { add } = useContext(NotificationContext) as NotificationContextType;
+  const { add } = useNotification();
 
   const navigate = useNavigate();
 
