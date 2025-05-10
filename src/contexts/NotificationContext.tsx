@@ -1,16 +1,10 @@
 import { createContext, ReactNode, useState } from 'react';
-import { MESSAGE_STATUS, MessageOptions } from '../types/notification';
+import { MessageOptions } from '../types/notification';
 
 export interface NotificationContextType {
   options: MessageOptions | null;
   addNotification: (options: MessageOptions | null) => void;
 }
-
-const testOptions: MessageOptions = {
-  message: 'Test message',
-  status: MESSAGE_STATUS.SUCCESS,
-  position: { centered: true },
-};
 
 export const NotificationContext = createContext<
   NotificationContextType | undefined
@@ -21,7 +15,7 @@ interface Props {
 }
 
 export function NotificationProvider({ children }: Props) {
-  const [options, setOptions] = useState<MessageOptions | null>(testOptions);
+  const [options, setOptions] = useState<MessageOptions | null>(null);
 
   function addNotification(newOptions: MessageOptions | null) {
     setOptions(newOptions);

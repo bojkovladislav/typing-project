@@ -2,8 +2,8 @@ import { ErrorMessage, Field, Form, Formik, FormikValues } from 'formik';
 import { ReactNode } from 'react';
 import { useTheme } from '../../../hooks/useTheme';
 import Button from '../Button/Button';
-import { CheckOutlined } from '@ant-design/icons';
 import * as Yup from 'yup';
+import CustomCheckbox from '../CustomCheckbox/CustomCheckbox';
 
 interface Props<V extends FormikValues> {
   values: V;
@@ -56,20 +56,7 @@ function BaseForm<V extends FormikValues>({
             ))}
           </div>
 
-          {checkboxName ? (
-            <label className="flex items-center space-x-2 cursor-pointer">
-              <Field
-                type="checkbox"
-                name={checkboxName}
-                className="hidden peer"
-                id={checkboxName}
-              />
-              <div className="w-5 h-5 flex items-center justify-center bg-black border border-gray-500 rounded-sm peer-checked:bg-yellow-500 peer-checked:border-yellow-500">
-                <CheckOutlined className="text-black opacity-0 peer-checked:opacity-100" />
-              </div>
-              <span className="text-gray-300 text-lg">{checkboxName}</span>
-            </label>
-          ) : null}
+          {checkboxName ? <CustomCheckbox label={checkboxName} /> : null}
 
           <Button
             text={submitButtonText || 'Submit'}
