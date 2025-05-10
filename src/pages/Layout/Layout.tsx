@@ -11,7 +11,7 @@ import { useNotification } from '../../hooks/useNotification';
 
 function Layout() {
   const [themeModalOpen, setThemeModalOpen] = useState(false);
-  const { options, add } = useNotification();
+  const { options, addNotification } = useNotification();
 
   function handleModalClose() {
     setThemeModalOpen(false);
@@ -19,7 +19,9 @@ function Layout() {
 
   return (
     <div className="flex flex-col gap-36 h-screen">
-      {options && <Notification {...options} onClose={() => add(null)} />}
+      {options && (
+        <Notification {...options} onClose={() => addNotification(null)} />
+      )}
       <Header />
       <Hints />
 

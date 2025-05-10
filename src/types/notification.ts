@@ -23,5 +23,5 @@ interface NotificationPosition {
 export interface MessageOptions {
   message: string;
   status: MESSAGE_STATUS;
-  position: NotificationPosition;
+  position?: NotificationPosition;
 }

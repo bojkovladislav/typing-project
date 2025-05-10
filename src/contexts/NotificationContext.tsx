@@ -3,7 +3,7 @@ import { MESSAGE_STATUS, MessageOptions } from '../types/notification';
 
 export interface NotificationContextType {
   options: MessageOptions | null;
-  add: (options: MessageOptions | null) => void;
+  addNotification: (options: MessageOptions | null) => void;
 }
 
 const testOptions: MessageOptions = {
@@ -23,12 +23,12 @@ interface Props {
 export function NotificationProvider({ children }: Props) {
   const [options, setOptions] = useState<MessageOptions | null>(testOptions);
 
-  function add(newOptions: MessageOptions | null) {
+  function addNotification(newOptions: MessageOptions | null) {
     setOptions(newOptions);
   }
 
   return (
-    <NotificationContext.Provider value={{ options, add }}>
+    <NotificationContext.Provider value={{ options, addNotification }}>
       {children}
     </NotificationContext.Provider>
   );

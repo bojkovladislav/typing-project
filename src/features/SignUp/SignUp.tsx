@@ -3,30 +3,19 @@ import BaseForm from '../../components/ui/BaseForm/BaseForm';
 import FormTitle from '../../components/ui/FormTitle/FormTitle';
 import { signUpSchema, SignUpSchema } from '../../validations/SignUpSchema';
 import { signup } from '../../api/auth';
-import { useContext } from 'react';
-import {
-  NotificationContext,
-  NotificationContextType,
-} from '../../contexts/NotificationContext';
-import { MESSAGE_STATUS } from '../../types/notification';
+import { useNotification } from '../../hooks/useNotification';
 
 function SignUp() {
-  const { add } = useContext(NotificationContext) as NotificationContextType;
+  const { handleAuthNotifications } = useNotification();
 
   async function onSubmit(values: SignUpSchema) {
     const { username, email, password } = values;
 
     const response = await signup({ username, email, password });
 
-    add({
-      message: response.error,
-      status: MESSAGE_STATUS.DANGER,
-      position: {
-        centered: true,
-      },
-    });
+    handleAuthNotifications(response);
 
-    // CODE HERE
+    // Here, write code for the further redirecting or whatnot
   }
 
   return (

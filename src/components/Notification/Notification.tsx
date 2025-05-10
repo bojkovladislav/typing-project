@@ -15,7 +15,7 @@ interface NotificationProps extends MessageOptions {
 function Notification({
   message,
   status,
-  position,
+  position = { centered: true },
   onClose,
 }: NotificationProps) {
   const [visible, setVisible] = useState(true);

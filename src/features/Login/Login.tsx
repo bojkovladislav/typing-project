@@ -12,24 +12,17 @@ import { useEffect } from 'react';
 import { getUrlParts, setCookie } from '../../utils/cookies';
 import { loginSchema, LoginSchema } from '../../validations/LoginSchema';
 import { login } from '../../api/auth';
-import { MESSAGE_STATUS } from '../../types/notification';
 import { useNotification } from '../../hooks/useNotification';
 
 function Login() {
-  const { add } = useNotification();
+  const { handleAuthNotifications } = useNotification();
 
   const navigate = useNavigate();
 
   async function onSubmit(values: LoginSchema) {
     const response = await login(values);
 
-    add({
-      message: response.error,
-      status: MESSAGE_STATUS.DANGER,
-      position: {
-        centered: true,
-      },
-    });
+    handleAuthNotifications(response);
   }
 
   useEffect(() => {
