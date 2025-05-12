@@ -2,11 +2,14 @@ import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { getCookie } from '../../utils/cookies';
 import { GoogleAuthData, UserData } from '../../types/api';
+import { useNotification } from '../../hooks/useNotification';
+import { MESSAGE_STATUS } from '../../types/notification';
 
 function Profile() {
   const [userData, setUserData] = useState<UserData | null>(null);
   const googleAccessToken = getCookie('google_access_token');
   const githubAccessToken = getCookie('github_access_token');
+  const { addNotification } = useNotification();
 
   async function fetchGoogleUserData() {
     try {
@@ -67,6 +70,11 @@ function Profile() {
   useEffect(() => {
     fetchGoogleUserData();
     fetchGithubUserData();
+
+    addNotification({
+      message: "You've been successfully logged in",
+      status: MESSAGE_STATUS.SUCCESS,
+    });
   }, [googleAccessToken, githubAccessToken]);
 
   return (
