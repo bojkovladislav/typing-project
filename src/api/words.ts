@@ -1,8 +1,6 @@
 import { NumberOfWords } from '../types/configurationBar';
-import { getData } from '.';
+import { API_URLS, getData } from '.';
 import { apiOperations } from './apiMiddleware';
-
-const API_URL: string = 'https://random-word-api.vercel.app/api?words';
 
 export async function fetchWords(
   punctuation: boolean,
@@ -90,7 +88,7 @@ export async function fetchWords(
   }
 
   return await api.GET(async () => {
-    const preparedUrl = `${API_URL}=${numberOfWords}`;
+    const preparedUrl = `${API_URLS.words}=${numberOfWords}`;
     const response = await getData(preparedUrl);
 
     let words = response.data;

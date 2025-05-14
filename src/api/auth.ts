@@ -1,4 +1,4 @@
-import { sendData } from '.';
+import { sendData, user_endpoint } from '.';
 import {
   AuthorizedUserData,
   CreatedUser,
@@ -6,8 +6,6 @@ import {
   UserSignupData,
 } from '../types/user';
 import { apiOperations } from './apiMiddleware';
-
-const BASE_URL = 'http://localhost:3000/api/user';
 
 const api = new apiOperations();
 
@@ -19,7 +17,7 @@ async function authenticate<GivenData, ResponseUserData>(
     const response = await sendData<
       { token: string; user: ResponseUserData },
       GivenData
-    >(`${BASE_URL}/${method}`, data);
+    >(`${user_endpoint}/${method}`, data);
 
     return response.data;
   });

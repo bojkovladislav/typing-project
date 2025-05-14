@@ -5,7 +5,7 @@ function Separator() {
     <div className="flex gap-2 w-full items-center justify-center">
       <Line />
 
-      <span className="text-lg text-center font-semibold">or</span>
+      <span className="text-lg text-center font-semibold select-none">or</span>
 
       <Line />
     </div>

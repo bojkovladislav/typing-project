@@ -7,12 +7,13 @@ import FormTitle from '../../components/ui/FormTitle/FormTitle';
 import BaseForm from '../../components/ui/BaseForm/BaseForm';
 import AuthOption from '../../components/AuthOption/AuthOption';
 import Separator from '../../components/Separator/Separator';
-import { Link, useNavigate } from 'react-router';
+import { useNavigate } from 'react-router';
 import { useEffect } from 'react';
 import { getUrlParts, setCookie } from '../../utils/cookies';
 import { loginSchema, LoginSchema } from '../../validations/LoginSchema';
 import { login } from '../../api/auth';
 import { useNotification } from '../../hooks/useNotification';
+import { oauth_endpoint } from '../../api';
 
 function Login() {
   const { handleAuthNotifications } = useNotification();
@@ -49,19 +50,15 @@ function Login() {
       <FormTitle title="login" icon={<LoginOutlined />} />
 
       <div className="flex gap-3">
-        <Link
-          to="http://localhost:3000/oauth2/google"
-          className="block w-full text-white default-clear"
-        >
-          <AuthOption authOption={<GoogleOutlined />} action={() => {}} />
-        </Link>
+        <AuthOption
+          authOption={<GoogleOutlined />}
+          redirectTo={`${oauth_endpoint}/google`}
+        />
 
-        <Link
-          to="http://localhost:3000/oauth2/github"
-          className="block w-full text-white default-clear"
-        >
-          <AuthOption authOption={<GithubOutlined />} action={() => {}} />
-        </Link>
+        <AuthOption
+          authOption={<GithubOutlined />}
+          redirectTo={`${oauth_endpoint}/github`}
+        />
       </div>
 
       <Separator />
