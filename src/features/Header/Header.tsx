@@ -3,7 +3,7 @@ import {
   SettingOutlined,
   UserOutlined,
 } from '@ant-design/icons';
-import { Link } from 'react-router';
+import { Link, useLocation } from 'react-router';
 // import { getCookie, removeCookie } from '../../utils/cookies';
 
 function Header() {
@@ -14,6 +14,8 @@ function Header() {
   //     removeCookie('google_access_token');
   //   }
   // }
+
+  const location = useLocation();
 
   return (
     <div className="flex justify-between">
@@ -27,9 +29,11 @@ function Header() {
 
         <SettingOutlined className="cursor-pointer" />
       </div>
-      <Link to="/authorize" className="default-clear">
-        <UserOutlined className="cursor-pointer" />
-      </Link>
+      {location.pathname !== '/profile' && (
+        <Link to="/authorize" className="default-clear">
+          <UserOutlined className="cursor-pointer" />
+        </Link>
+      )}
     </div>
   );
 }
