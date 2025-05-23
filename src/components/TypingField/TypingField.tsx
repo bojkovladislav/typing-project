@@ -1,9 +1,10 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { Mode, Modes, WordsMode } from '../../types/configurationBar';
 import { TextCharacter } from '../../types/typing';
 import Cursor from '../ui/Cursor/Cursor';
 import { SetState } from '../../types/common';
 import { defaultMode } from '../../constants';
+import { LockOutlined } from '@ant-design/icons';
 
 interface Props {
   currentLetterIndex: number;
@@ -26,6 +27,10 @@ function TypingField({
   timer,
   setTimer,
 }: Props) {
+  const [isFocused, setIsFocused] = useState(true);
+  const [isBlurred, setIsBlurred] = useState(false);
+  const textFieldRef = useRef<HTMLDivElement>(null);
+
   function getWordsFromLetters(text: TextCharacter[] | undefined) {
     if (!text) return [];
 
@@ -51,6 +56,32 @@ function TypingField({
   }, [text.length]);
 
   const [visibleCount, setVisibleCount] = useState(PEAK_NUMBER_OF_CHARACTERS);
+
+  useEffect(() => {
+    let timeout: NodeJS.Timeout;
+
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        textFieldRef.current &&
+        !textFieldRef.current.contains(event.target as Node)
+      ) {
+        setIsFocused(false);
+
+        timeout = setTimeout(() => {
+          if (!isFocused) {
+            setIsBlurred(true);
+          }
+        }, 2000);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+      clearTimeout(timeout);
+    };
+  }, []);
 
   useEffect(() => {
     setVisibleCount(PEAK_NUMBER_OF_CHARACTERS);
@@ -83,8 +114,21 @@ function TypingField({
   }, [currentLetterIndex]);
 
   return (
-    <div className="relative">
-      {!loading && (
+    <div className="relative" ref={textFieldRef}>
+      {!isFocused && (
+        <div
+          className="flex items-center justify-center gap-3 cursor-default center-absolute w-full h-full z-10"
+          onClick={() => {
+            setIsFocused(true);
+            setIsBlurred(false);
+          }}
+        >
+          <LockOutlined className="text-xl" />
+          <p className="text-xl">Click here or press any key to unlock</p>
+        </div>
+      )}
+
+      {!loading && !isBlurred && (
         <div className="absolute left-0 top-[-30px] text-xl">
           {currentMode.selectedMode === Modes.TIME ? timer : wordsCounter}
         </div>
@@ -97,10 +141,11 @@ function TypingField({
             className="relative text-3xl mb-3"
             style={{
               color: letter.currentColor,
+              filter: isBlurred ? 'blur(5px)' : 'none',
               display: `inline${!letter.value.trim().length ? '' : '-block'}`,
             }}
           >
-            {i === currentLetterIndex && <Cursor />}
+            {i === currentLetterIndex && isFocused && <Cursor />}
             {letter.value}
           </span>
         ))}
