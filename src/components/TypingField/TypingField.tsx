@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { MutableRefObject, useEffect, useMemo, useRef, useState } from 'react';
 import { Mode, Modes, WordsMode } from '../../types/configurationBar';
 import { TextCharacter } from '../../types/typing';
 import Cursor from '../ui/Cursor/Cursor';
@@ -15,6 +15,9 @@ interface Props {
   setTimer: SetState<number>;
   loading: boolean;
   text: TextCharacter[];
+  isFocused: MutableRefObject<boolean>;
+  isBlurred: boolean;
+  blur: (value: boolean) => void;
 }
 
 function TypingField({
@@ -26,9 +29,10 @@ function TypingField({
   numberOfWords,
   timer,
   setTimer,
+  isFocused,
+  isBlurred,
+  blur,
 }: Props) {
-  const isFocusedRef = useRef(true);
-  const [isBlurred, setIsBlurred] = useState(false);
   const textFieldRef = useRef<HTMLDivElement>(null);
 
   function getWordsFromLetters(text: TextCharacter[] | undefined) {
@@ -65,11 +69,11 @@ function TypingField({
         textFieldRef.current &&
         !textFieldRef.current.contains(event.target as Node)
       ) {
-        isFocusedRef.current = false;
+        isFocused.current = false;
 
         timeout = setTimeout(() => {
-          if (!isFocusedRef.current) {
-            setIsBlurred(true);
+          if (!isFocused.current) {
+            blur(true);
           }
         }, 2000);
       }
@@ -117,13 +121,13 @@ function TypingField({
     <div
       className="relative"
       ref={textFieldRef}
-      onClick={() => (isFocusedRef.current = true)}
+      onClick={() => (isFocused.current = true)}
     >
       {isBlurred && (
         <div
           className="flex items-center justify-center gap-3 cursor-default center-absolute w-full h-full z-10"
           onClick={() => {
-            setIsBlurred(false);
+            blur(false);
           }}
         >
           <LockOutlined className="text-xl" />
@@ -148,7 +152,7 @@ function TypingField({
               display: `inline${!letter.value.trim().length ? '' : '-block'}`,
             }}
           >
-            {i === currentLetterIndex && isFocusedRef.current && <Cursor />}
+            {i === currentLetterIndex && isFocused.current && <Cursor />}
             {letter.value}
           </span>
         ))}

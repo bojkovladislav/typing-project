@@ -9,6 +9,9 @@ interface ReturnValues {
   wpmResult: number | null;
   numberOfTypedWords: number;
   restart: () => void;
+  isFocused: MutableRefObject<boolean>;
+  isBlurred: boolean;
+  blur: (value: boolean) => void;
 }
 
 export default function useTyping(): ReturnValues {
@@ -22,6 +25,12 @@ export default function useTyping(): ReturnValues {
     text: TextCharacter[];
     setText: SetState<TextCharacter[]>;
   };
+  const isFocusedRef = useRef(true);
+  const [isBlurred, setIsBlurred] = useState(false);
+
+  function blur(value: boolean) {
+    setIsBlurred(value);
+  }
 
   function restart() {
     currentLetterIndexRef.current = 0;
@@ -102,6 +111,13 @@ export default function useTyping(): ReturnValues {
       const key = event.key;
 
       let updatedIndex = currentLetterIndexRef.current;
+
+      if (!isFocusedRef.current) {
+        isFocusedRef.current = true;
+        blur(false);
+
+        return;
+      }
 
       if (text[updatedIndex].value === ' ' && key !== 'Backspace') {
         setEndIndexesOfTypedWords((prevIndexes) =>
@@ -195,5 +211,8 @@ export default function useTyping(): ReturnValues {
     wpmResult,
     numberOfTypedWords: endIndexesOfTypedWords.length,
     restart,
+    isFocused: isFocusedRef,
+    isBlurred,
+    blur,
   };
 }

@@ -70,8 +70,15 @@ function TypingTest({ currentMode }: Props) {
     }
   }
 
-  const { currentLetterIndex, wpmResult, numberOfTypedWords, restart } =
-    useTyping();
+  const {
+    currentLetterIndex,
+    wpmResult,
+    numberOfTypedWords,
+    restart,
+    isFocused,
+    isBlurred,
+    blur,
+  } = useTyping();
 
   function restartTest() {
     restart();
@@ -107,6 +114,9 @@ function TypingTest({ currentMode }: Props) {
             loading={isDataLoading}
             text={text}
             numberOfWords={currentNumberOfWords}
+            isFocused={isFocused}
+            isBlurred={isBlurred}
+            blur={blur}
           />
         )
       )}
