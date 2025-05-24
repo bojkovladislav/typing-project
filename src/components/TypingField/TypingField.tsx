@@ -27,7 +27,7 @@ function TypingField({
   timer,
   setTimer,
 }: Props) {
-  const [isFocused, setIsFocused] = useState(true);
+  const isFocusedRef = useRef(true);
   const [isBlurred, setIsBlurred] = useState(false);
   const textFieldRef = useRef<HTMLDivElement>(null);
 
@@ -65,10 +65,10 @@ function TypingField({
         textFieldRef.current &&
         !textFieldRef.current.contains(event.target as Node)
       ) {
-        setIsFocused(false);
+        isFocusedRef.current = false;
 
         timeout = setTimeout(() => {
-          if (!isFocused) {
+          if (!isFocusedRef.current) {
             setIsBlurred(true);
           }
         }, 2000);
@@ -114,12 +114,15 @@ function TypingField({
   }, [currentLetterIndex]);
 
   return (
-    <div className="relative" ref={textFieldRef}>
-      {!isFocused && (
+    <div
+      className="relative"
+      ref={textFieldRef}
+      onClick={() => (isFocusedRef.current = true)}
+    >
+      {isBlurred && (
         <div
           className="flex items-center justify-center gap-3 cursor-default center-absolute w-full h-full z-10"
           onClick={() => {
-            setIsFocused(true);
             setIsBlurred(false);
           }}
         >
@@ -145,7 +148,7 @@ function TypingField({
               display: `inline${!letter.value.trim().length ? '' : '-block'}`,
             }}
           >
-            {i === currentLetterIndex && isFocused && <Cursor />}
+            {i === currentLetterIndex && isFocusedRef.current && <Cursor />}
             {letter.value}
           </span>
         ))}
