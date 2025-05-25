@@ -18,6 +18,7 @@ function RestartButton({ action, tabIndex }: RestartButtonProps) {
       content={<p style={{ color: currentTheme.text.neutral }}>Restart Test</p>}
       placement="bottom"
       color={currentTheme.interface.secondaryColor}
+      trigger={['hover', 'focus']}
       rootClassName="custom-restart-popover"
     >
       <div
