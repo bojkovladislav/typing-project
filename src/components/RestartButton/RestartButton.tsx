@@ -2,6 +2,7 @@ import { ReloadOutlined } from '@ant-design/icons';
 import { useTheme } from '../../hooks/useTheme';
 import { useHover } from '../../hooks/useHover';
 import { Popover } from 'antd';
+import Button from '../ui/Button/Button';
 
 interface RestartButtonProps {
   action: () => void;
@@ -19,16 +20,23 @@ function RestartButton({ action, tabIndex }: RestartButtonProps) {
       color={currentTheme.interface.secondaryColor}
       rootClassName="custom-restart-popover"
     >
-      <ReloadOutlined
-        onClick={action}
-        tabIndex={tabIndex}
+      <div
         onMouseEnter={hoverProps.onMouseEnter}
         onMouseLeave={hoverProps.onMouseLeave}
-        style={{
-          color: !isHovered ? currentTheme.text.neutral : 'white',
-          transition: `0.3s all`,
-        }}
-      />
+      >
+        <Button
+          action={action}
+          tabIndex={tabIndex}
+          icon={
+            <ReloadOutlined
+              style={{
+                color: !isHovered ? currentTheme.text.neutral : 'white',
+                transition: `0.3s all`,
+              }}
+            />
+          }
+        />
+      </div>
     </Popover>
   );
 }

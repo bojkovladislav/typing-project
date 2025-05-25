@@ -58,7 +58,7 @@ function Button({
         >
           {icon}
 
-          <p>{text}</p>
+          {text && <p>{text}</p>}
         </div>
       ) : (
         <p>{text}</p>
