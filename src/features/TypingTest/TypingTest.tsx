@@ -103,8 +103,7 @@ function TypingTest({ currentMode }: Props) {
           wpmResult || 0
         } words per minute!`}</p>
       ) : (
-        !wordsError &&
-        (quoteData?.data || wordsData?.data) && (
+        !wordsError && (
           <TypingField
             currentMode={currentMode}
             currentLetterIndex={currentLetterIndex.current}

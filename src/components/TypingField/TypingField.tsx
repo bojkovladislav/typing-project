@@ -5,6 +5,7 @@ import Cursor from '../ui/Cursor/Cursor';
 import { SetState } from '../../types/common';
 import { defaultMode } from '../../constants';
 import { LockOutlined } from '@ant-design/icons';
+import { Spin } from 'antd';
 
 interface Props {
   currentLetterIndex: number;
@@ -65,6 +66,14 @@ function TypingField({
     let timeout: NodeJS.Timeout;
 
     const handleClickOutside = (event: MouseEvent) => {
+      const target = event.target as HTMLElement;
+
+      const interactiveAncestor = target.closest(
+        'button, input, textarea, select, label, [role="button"], [role="menu"], [data-ignore-blur]'
+      );
+
+      if (interactiveAncestor) return;
+
       if (
         textFieldRef.current &&
         !textFieldRef.current.contains(event.target as Node)
@@ -141,22 +150,26 @@ function TypingField({
         </div>
       )}
 
-      <div className="max-w-[1500px] transition-all duration-300 ease-in-out">
-        {text.slice(0, visibleCount).map((letter, i) => (
-          <span
-            key={i}
-            className="relative text-3xl mb-3"
-            style={{
-              color: letter.currentColor,
-              filter: isBlurred ? 'blur(5px)' : 'none',
-              display: `inline${!letter.value.trim().length ? '' : '-block'}`,
-            }}
-          >
-            {i === currentLetterIndex && isFocused.current && <Cursor />}
-            {letter.value}
-          </span>
-        ))}
-      </div>
+      {loading ? (
+        <Spin size="large" />
+      ) : (
+        <div className="max-w-[1500px] transition-all duration-300 ease-in-out">
+          {text.slice(0, visibleCount).map((letter, i) => (
+            <span
+              key={i}
+              className="relative text-3xl mb-3"
+              style={{
+                color: letter.currentColor,
+                filter: isBlurred ? 'blur(5px)' : 'none',
+                display: `inline${!letter.value.trim().length ? '' : '-block'}`,
+              }}
+            >
+              {i === currentLetterIndex && isFocused.current && <Cursor />}
+              {letter.value}
+            </span>
+          ))}
+        </div>
+      )}
     </div>
   );
 }
