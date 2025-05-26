@@ -1,5 +1,5 @@
-import { useTheme } from '../../hooks/useTheme';
 import { Modes, TextModes } from '../../types/configurationBar';
+import ConfigurationOption from '../ui/ConfigurationOption/ConfigurationOption';
 
 interface Props {
   optionName: keyof TextModes;
@@ -8,22 +8,12 @@ interface Props {
 }
 
 function ModeSelector({ optionName, changeMode, selectedMode }: Props) {
-  const { currentTheme } = useTheme();
-
   return (
-    <div className="cursor-pointer text-lg">
-      <div
-        onClick={() => changeMode(optionName as Modes)}
-        style={{
-          color:
-            optionName === selectedMode
-              ? currentTheme.interface.selectedColor
-              : currentTheme.interface.tertiaryColor,
-        }}
-      >
-        {optionName}
-      </div>
-    </div>
+    <ConfigurationOption
+      action={() => changeMode(optionName as Modes)}
+      content={optionName}
+      selectCondition={optionName === selectedMode}
+    />
   );
 }
 

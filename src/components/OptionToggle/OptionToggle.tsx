@@ -1,6 +1,6 @@
-import { useTheme } from '../../hooks/useTheme';
 import { TextModes, WordsMode } from '../../types/configurationBar';
 import { Modes } from '../../types/enums';
+import ConfigurationOption from '../ui/ConfigurationOption/ConfigurationOption';
 
 interface Props {
   name: string;
@@ -14,27 +14,18 @@ interface Props {
 }
 
 function OptionToggle({ name, value, selectedMode, changeOption }: Props) {
-  const { currentTheme } = useTheme();
-
   return (
-    <span
-      className="cursor-pointer text-lg"
-      key={name}
-      onClick={() =>
+    <ConfigurationOption
+      action={() =>
         changeOption<Modes.WORDS, boolean>(
           selectedMode,
           name as keyof WordsMode,
           !value
         )
       }
-      style={{
-        color: value
-          ? currentTheme.interface.selectedColor
-          : currentTheme.interface.tertiaryColor,
-      }}
-    >
-      {name}
-    </span>
+      content={name}
+      selectCondition={!!value}
+    />
   );
 }
 

@@ -1,4 +1,4 @@
-import { useTheme } from '../../hooks/useTheme';
+import ConfigurationOption from '../ui/ConfigurationOption/ConfigurationOption';
 
 interface Props {
   changeOption: () => void;
@@ -7,21 +7,12 @@ interface Props {
 }
 
 function ValueSelector({ changeOption, valueToCompare, value }: Props) {
-  const { currentTheme } = useTheme();
-
   return (
-    <div
-      onClick={changeOption}
-      className="cursor-pointer text-lg"
-      style={{
-        color:
-          valueToCompare === value
-            ? currentTheme.interface.selectedColor
-            : currentTheme.interface.tertiaryColor,
-      }}
-    >
-      {value}
-    </div>
+    <ConfigurationOption
+      action={changeOption}
+      content={value}
+      selectCondition={valueToCompare === value}
+    />
   );
 }
 
