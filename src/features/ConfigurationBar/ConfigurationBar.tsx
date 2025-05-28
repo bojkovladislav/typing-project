@@ -19,6 +19,8 @@ import OptionToggle from '../../components/OptionToggle/OptionToggle';
 import ModeSelector from '../../components/ModeSelector/ModeSelector';
 import { useTheme } from '../../hooks/useTheme';
 import Spacer from '../../components/ui/Spacer/Spacer';
+import { SettingTwoTone } from '@ant-design/icons';
+import Modal from '../../components/ui/Modal/Modal';
 
 interface Props {
   currentMode: Mode;
@@ -28,6 +30,21 @@ interface Props {
 function ConfigurationBar({ currentMode, setCurrentMode }: Props) {
   const { selectedMode, additionalOptions } = currentMode;
   const { currentTheme } = useTheme();
+  const [isModeSettingsModalOpened, setIsModeSettingsModalOpened] =
+    useState(false);
+
+  function handleModeSettingsModalClose() {
+    setIsModeSettingsModalOpened(false);
+  }
+
+  function handleModeSettingsModalOpen() {
+    setIsModeSettingsModalOpened(true);
+  }
+
+  const isTimeOrWordsMode = useMemo(
+    () => selectedMode === Modes.TIME || selectedMode === Modes.WORDS,
+    [selectedMode]
+  );
 
   function getOptions() {
     return {
@@ -98,14 +115,25 @@ function ConfigurationBar({ currentMode, setCurrentMode }: Props) {
             value={value}
           />
         ))}
+
+        {isTimeOrWordsMode && (
+          <Modal
+            handleClose={handleModeSettingsModalClose}
+            open={isModeSettingsModalOpened}
+            title="Test"
+            triggerButton={
+              <SettingTwoTone
+                onClick={handleModeSettingsModalOpen}
+                twoToneColor={currentTheme.interface.selectedColor}
+              />
+            }
+          >
+            <p>Test Modal</p>
+          </Modal>
+        )}
       </motion.div>
     );
   }
-
-  const isVisible = useMemo(
-    () => selectedMode === Modes.TIME || selectedMode === Modes.WORDS,
-    [selectedMode]
-  );
 
   return (
     <div
@@ -113,13 +141,13 @@ function ConfigurationBar({ currentMode, setCurrentMode }: Props) {
       style={{ backgroundColor: currentTheme.interface.secondaryColor }}
     >
       <AnimatePresence>
-        {isVisible && (
+        {isTimeOrWordsMode && (
           <motion.div
             className="flex gap-5 mr-3 cursor-pointer"
             initial={{ width: 0, opacity: 0 }}
             animate={{
-              width: isVisible ? 'auto' : 0,
-              opacity: isVisible ? 1 : 0,
+              width: isTimeOrWordsMode ? 'auto' : 0,
+              opacity: isTimeOrWordsMode ? 1 : 0,
             }}
             exit={{
               opacity: 0,
