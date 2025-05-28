@@ -5,7 +5,6 @@ import { useTheme } from '../../../hooks/useTheme';
 
 interface Props {
   loading?: boolean;
-
   handleClose: () => void;
   open: boolean;
   title: string;
@@ -18,7 +17,6 @@ function Modal({
   title,
   open,
   handleClose,
-
   triggerButton,
   children,
 }: Props) {
