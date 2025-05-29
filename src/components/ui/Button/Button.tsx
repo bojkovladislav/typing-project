@@ -42,6 +42,9 @@ function Button({
           '--button-hover-color': hoverEffect
             ? currentTheme.interface.selectedColor
             : 'white',
+          transition: '0.3s all',
+          outline: 'none',
+          border: hoverEffect ? '' : 'none',
           ...additionalStyles,
         } as CSSProperties
       }
