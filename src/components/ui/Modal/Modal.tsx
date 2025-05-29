@@ -1,7 +1,8 @@
-import { CSSProperties, ReactNode } from 'react';
+import { CSSProperties, ReactNode, useEffect } from 'react';
 import { Modal as AntdModal } from 'antd';
 import './Modal.less';
 import { useTheme } from '../../../hooks/useTheme';
+import { useTypingTestLock } from '../../../contexts/LockTypingTestContext';
 
 interface Props {
   loading?: boolean;
@@ -10,6 +11,7 @@ interface Props {
   title: string;
   children: ReactNode;
   triggerButton: ReactNode;
+  destroyOnClose?: boolean;
 }
 
 function Modal({
@@ -17,10 +19,21 @@ function Modal({
   title,
   open,
   handleClose,
+  destroyOnClose,
   triggerButton,
   children,
 }: Props) {
   const { currentTheme } = useTheme();
+  const { lockTypingTestFromOutside, unlockTypingTestFromOutside } =
+    useTypingTestLock();
+
+  useEffect(() => {
+    if (open) {
+      lockTypingTestFromOutside();
+    } else {
+      unlockTypingTestFromOutside();
+    }
+  }, [open]);
 
   return (
     <>
@@ -28,6 +41,7 @@ function Modal({
 
       <AntdModal
         title={<p>{title}</p>}
+        destroyOnClose={destroyOnClose}
         loading={loading}
         className="custom-modal"
         style={
