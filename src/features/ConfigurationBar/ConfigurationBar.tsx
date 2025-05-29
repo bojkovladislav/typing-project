@@ -21,6 +21,7 @@ import { useTheme } from '../../hooks/useTheme';
 import Spacer from '../../components/ui/Spacer/Spacer';
 import { SettingTwoTone } from '@ant-design/icons';
 import Modal from '../../components/ui/Modal/Modal';
+import ModeSettings from '../ModeSettings/ModeSettings';
 
 interface Props {
   currentMode: Mode;
@@ -119,8 +120,13 @@ function ConfigurationBar({ currentMode, setCurrentMode }: Props) {
         {isTimeOrWordsMode && (
           <Modal
             handleClose={handleModeSettingsModalClose}
+            destroyOnClose={true}
             open={isModeSettingsModalOpened}
-            title="Test"
+            title={
+              selectedMode === Modes.WORDS
+                ? 'Custom Word Amount'
+                : 'Test Duration'
+            }
             triggerButton={
               <SettingTwoTone
                 onClick={handleModeSettingsModalOpen}
@@ -128,7 +134,12 @@ function ConfigurationBar({ currentMode, setCurrentMode }: Props) {
               />
             }
           >
-            <p>Test Modal</p>
+            <ModeSettings
+              mode={selectedMode as Modes.WORDS | Modes.TIME}
+              additionalOptions={additionalOptions as WordsMode | TimeMode}
+              changeOption={changeOption}
+              handleModalClose={handleModeSettingsModalClose}
+            />
           </Modal>
         )}
       </motion.div>
