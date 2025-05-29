@@ -1,4 +1,4 @@
-import { MutableRefObject, useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { Mode, Modes, WordsMode } from '../../types/configurationBar';
 import { TextCharacter } from '../../types/typing';
 import Cursor from '../ui/Cursor/Cursor';
@@ -6,6 +6,7 @@ import { SetState } from '../../types/common';
 import { defaultMode } from '../../constants';
 import { LockOutlined } from '@ant-design/icons';
 import { Spin } from 'antd';
+import { useTypingTestLock } from '../../contexts/LockTypingTestContext';
 
 interface Props {
   currentLetterIndex: number;
@@ -16,7 +17,6 @@ interface Props {
   setTimer: SetState<number>;
   loading: boolean;
   text: TextCharacter[];
-  isFocused: MutableRefObject<boolean>;
   isBlurred: boolean;
   blur: (value: boolean) => void;
 }
@@ -30,11 +30,12 @@ function TypingField({
   numberOfWords,
   timer,
   setTimer,
-  isFocused,
   isBlurred,
   blur,
 }: Props) {
   const textFieldRef = useRef<HTMLDivElement>(null);
+  const { isTypingTestLocked, lockTypingTest, unlockTypingTest } =
+    useTypingTestLock();
 
   function getWordsFromLetters(text: TextCharacter[] | undefined) {
     if (!text) return [];
@@ -78,10 +79,10 @@ function TypingField({
         textFieldRef.current &&
         !textFieldRef.current.contains(event.target as Node)
       ) {
-        isFocused.current = false;
+        lockTypingTest();
 
         timeout = setTimeout(() => {
-          if (!isFocused.current) {
+          if (isTypingTestLocked.current) {
             blur(true);
           }
         }, 2000);
@@ -127,11 +128,7 @@ function TypingField({
   }, [currentLetterIndex]);
 
   return (
-    <div
-      className="relative"
-      ref={textFieldRef}
-      onClick={() => (isFocused.current = true)}
-    >
+    <div className="relative" ref={textFieldRef} onClick={unlockTypingTest}>
       {isBlurred && (
         <div
           className="flex items-center justify-center gap-3 cursor-default center-absolute w-full h-full z-10"
@@ -164,7 +161,9 @@ function TypingField({
                 display: `inline${!letter.value.trim().length ? '' : '-block'}`,
               }}
             >
-              {i === currentLetterIndex && isFocused.current && <Cursor />}
+              {i === currentLetterIndex && !isTypingTestLocked.current && (
+                <Cursor />
+              )}
               {letter.value}
             </span>
           ))}

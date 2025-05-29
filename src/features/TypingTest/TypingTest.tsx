@@ -75,7 +75,6 @@ function TypingTest({ currentMode }: Props) {
     wpmResult,
     numberOfTypedWords,
     restart,
-    isFocused,
     isBlurred,
     blur,
   } = useTyping();
@@ -113,7 +112,6 @@ function TypingTest({ currentMode }: Props) {
             loading={isDataLoading}
             text={text}
             numberOfWords={currentNumberOfWords}
-            isFocused={isFocused}
             isBlurred={isBlurred}
             blur={blur}
           />

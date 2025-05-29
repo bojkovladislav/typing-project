@@ -8,20 +8,23 @@ import Authorize from './pages/Authorize/Authorize.tsx';
 import Layout from './pages/Layout/Layout.tsx';
 import { TypingProvider } from './contexts/TypingContext.tsx';
 import { NotificationProvider } from './contexts/NotificationContext.tsx';
+import { TypingTestLockProvider } from './contexts/LockTypingTestContext.tsx';
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <BrowserRouter>
     <ThemeProvider>
       <TypingProvider>
-        <NotificationProvider>
-          <Routes>
-            <Route path="/" element={<Layout />}>
-              <Route index element={<App />} />
-              <Route path="authorize" element={<Authorize />} />
-              <Route path="profile" element={<Profile />} />
-            </Route>
-          </Routes>
-        </NotificationProvider>
+        <TypingTestLockProvider>
+          <NotificationProvider>
+            <Routes>
+              <Route path="/" element={<Layout />}>
+                <Route index element={<App />} />
+                <Route path="authorize" element={<Authorize />} />
+                <Route path="profile" element={<Profile />} />
+              </Route>
+            </Routes>
+          </NotificationProvider>
+        </TypingTestLockProvider>
       </TypingProvider>
     </ThemeProvider>
   </BrowserRouter>

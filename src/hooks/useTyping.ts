@@ -3,13 +3,13 @@ import { TextCharacter } from '../types/typing';
 import { KeysToIgnore } from '../constants';
 import { useTypingContext } from '../contexts/TypingContext';
 import { SetState } from '../types/common';
+import { useTypingTestLock } from '../contexts/LockTypingTestContext';
 
 interface ReturnValues {
   currentLetterIndex: MutableRefObject<number>;
   wpmResult: number | null;
   numberOfTypedWords: number;
   restart: () => void;
-  isFocused: MutableRefObject<boolean>;
   isBlurred: boolean;
   blur: (value: boolean) => void;
 }
@@ -25,7 +25,11 @@ export default function useTyping(): ReturnValues {
     text: TextCharacter[];
     setText: SetState<TextCharacter[]>;
   };
-  const isFocusedRef = useRef(true);
+  const {
+    isTypingTestLocked,
+    unlockTypingTest,
+    isTypingTestLockedFromOutside,
+  } = useTypingTestLock();
   const [isBlurred, setIsBlurred] = useState(false);
 
   function blur(value: boolean) {
@@ -112,8 +116,12 @@ export default function useTyping(): ReturnValues {
 
       let updatedIndex = currentLetterIndexRef.current;
 
-      if (!isFocusedRef.current) {
-        isFocusedRef.current = true;
+      if (isTypingTestLockedFromOutside.current) {
+        return;
+      }
+
+      if (isTypingTestLocked.current) {
+        unlockTypingTest();
         blur(false);
 
         return;
@@ -146,7 +154,7 @@ export default function useTyping(): ReturnValues {
 
           return prevText.map(
             (letter, letIndex): TextCharacter => ({
-              ...letter, // Preserve all properties
+              ...letter,
               currentColor:
                 letIndex <= updatedIndex && letIndex >= startIndex
                   ? letter.colors.neutral
@@ -211,7 +219,6 @@ export default function useTyping(): ReturnValues {
     wpmResult,
     numberOfTypedWords: endIndexesOfTypedWords.length,
     restart,
-    isFocused: isFocusedRef,
     isBlurred,
     blur,
   };
