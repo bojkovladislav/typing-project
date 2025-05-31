@@ -4,6 +4,7 @@ import Button from '../../components/ui/Button/Button';
 import { useState } from 'react';
 import { useTheme } from '../../hooks/useTheme';
 import NumberInput from '../../components/ui/NumberInput/NumberInput';
+import { useInputFocus } from '../../hooks/useInputFocus';
 
 interface Props {
   mode: Modes.TIME | Modes.WORDS;
@@ -23,6 +24,7 @@ function ModeSettings({
   handleModalClose,
 }: Props) {
   const { currentTheme } = useTheme();
+  const { inputRef } = useInputFocus();
 
   const isWordsMode = mode === Modes.WORDS;
 
@@ -53,6 +55,7 @@ function ModeSettings({
       )}
 
       <NumberInput
+        inputRef={inputRef}
         value={value}
         onChange={setValue}
         max={maxValue}

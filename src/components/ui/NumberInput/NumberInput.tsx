@@ -1,8 +1,10 @@
 import { InputNumber } from 'antd';
 import './NumberInput.less';
 import { useTheme } from '../../../hooks/useTheme';
+import { RefObject } from 'react';
 
 interface Props {
+  inputRef?: RefObject<HTMLInputElement>;
   value: number;
   onChange: (value: number) => void;
   max?: number;
@@ -13,6 +15,7 @@ interface Props {
 
 function NumberInput({
   value,
+  inputRef,
   onChange,
   max = 999,
   min = 0,
@@ -29,6 +32,7 @@ function NumberInput({
 
   return (
     <InputNumber
+      ref={inputRef}
       variant="filled"
       className="custom-number-input"
       style={styleVars}
