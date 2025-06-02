@@ -1,7 +1,7 @@
 import { TextModes, TimeMode, WordsMode } from '../../types/configurationBar';
 import { Modes } from '../../types/enums';
 import Button from '../../components/ui/Button/Button';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { useTheme } from '../../hooks/useTheme';
 import NumberInput from '../../components/ui/NumberInput/NumberInput';
 import { useInputFocus } from '../../hooks/useInputFocus';
@@ -38,6 +38,44 @@ function ModeSettings({
 
   const [value, setValue] = useState<number>(selectedValue);
 
+  const formattedTime = useMemo(
+    () => convertSecondsToHoursAndMinutes(value),
+    [value]
+  );
+
+  function convertSecondsToHoursAndMinutes(
+    seconds: number | null | undefined
+  ): string {
+    if (!seconds || seconds < 60) return `${seconds || 0} seconds`;
+
+    const secondsInHour = 3600;
+    const secondsInMinute = 60;
+    let currentSeconds = seconds;
+
+    const hours = Math.floor(currentSeconds / secondsInHour);
+
+    currentSeconds %= secondsInHour;
+
+    const minutes = Math.floor(currentSeconds / secondsInMinute);
+
+    currentSeconds %= secondsInMinute;
+
+    console.log(hours);
+
+    const parts: string[] = [];
+
+    if (hours > 0) parts.push(`${hours} hour${hours !== 1 ? 's' : ''}`);
+    if (minutes > 0) parts.push(`${minutes} minute${minutes !== 1 ? 's' : ''}`);
+    if (currentSeconds > 0)
+      parts.push(`${currentSeconds} second${currentSeconds !== 1 ? 's' : ''}`);
+
+    if (parts.length === 1) return parts[0];
+    if (parts.length === 2) return `${parts[0]} and ${parts[1]}`;
+    return `${parts[0]}, ${parts[1]} and ${parts[2]}`;
+  }
+
+  console.log(convertSecondsToHoursAndMinutes(10000));
+
   const applyCustomValue = () => {
     if (isWordsMode) {
       changeOption(Modes.WORDS, 'selectedNumberOfWords', value);
@@ -51,7 +89,7 @@ function ModeSettings({
   return (
     <div className="p-4 flex flex-col gap-3">
       {!isWordsMode && (
-        <p style={{ color: currentTheme.text.neutral }}>{`${value} seconds`}</p>
+        <p style={{ color: currentTheme.text.neutral }}>{formattedTime}</p>
       )}
 
       <NumberInput
@@ -64,10 +102,8 @@ function ModeSettings({
       />
 
       <p style={{ color: currentTheme.text.neutral }}>
-        Lorem, ipsum dolor sit amet consectetur adipisicing elit. Laboriosam
-        laudantium at earum voluptate tempora excepturi consectetur, atque
-        tempore saepe aliquid odio accusantium illo architecto perferendis.
-        Perspiciatis architecto commodi quo. Qui.
+        {!isWordsMode &&
+          'You can use "h" for hours and "m" for minutes, for example "1h30m".'}
       </p>
 
       <Button text="ok" action={applyCustomValue} fill customStyles="w-full" />
