@@ -34,7 +34,7 @@ function ModeSettings({
 
   const maxValue = isWordsMode
     ? Math.max(...(additionalOptions as WordsMode).lengthToSelect)
-    : Math.max(...(additionalOptions as TimeMode).secondsToChooseFrom);
+    : null;
 
   const [value, setValue] = useState<number>(selectedValue);
 
@@ -44,13 +44,28 @@ function ModeSettings({
   );
 
   function convertSecondsToHoursAndMinutes(
-    seconds: number | null | undefined
+    inputValue: number | null | undefined
   ): string {
-    if (!seconds || seconds < 60) return `${seconds || 0} seconds`;
+    const timeUnits = ['h', 'm', 's'];
+
+    // 1h30m
+    // input includes "h" || "m" || "s"
+    // convert input back to seconds.
+
+    console.log('rendered');
+
+    if (
+      inputValue &&
+      timeUnits.some((unit) => inputValue.toString().includes(unit))
+    ) {
+      console.log('input value includes at least one identifier');
+    }
+
+    if (!inputValue || inputValue < 60) return `${inputValue || 0} seconds`;
 
     const secondsInHour = 3600;
     const secondsInMinute = 60;
-    let currentSeconds = seconds;
+    let currentSeconds = inputValue;
 
     const hours = Math.floor(currentSeconds / secondsInHour);
 
