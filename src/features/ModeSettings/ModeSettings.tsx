@@ -3,8 +3,8 @@ import { Modes } from '../../types/enums';
 import Button from '../../components/ui/Button/Button';
 import { useMemo, useState } from 'react';
 import { useTheme } from '../../hooks/useTheme';
-import NumberInput from '../../components/ui/NumberInput/NumberInput';
 import { useInputFocus } from '../../hooks/useInputFocus';
+import Input from '../../components/ui/Input/Input';
 
 interface Props {
   mode: Modes.TIME | Modes.WORDS;
@@ -36,7 +36,7 @@ function ModeSettings({
     ? Math.max(...(additionalOptions as WordsMode).lengthToSelect)
     : null;
 
-  const [value, setValue] = useState<number>(selectedValue);
+  const [value, setValue] = useState<string>(selectedValue.toString());
 
   const formattedTime = useMemo(
     () => convertSecondsToHoursAndMinutes(value),
@@ -44,7 +44,7 @@ function ModeSettings({
   );
 
   function convertSecondsToHoursAndMinutes(
-    inputValue: number | null | undefined
+    inputValue: string | null | undefined
   ): string {
     const timeUnits = ['h', 'm', 's'];
 
@@ -52,44 +52,39 @@ function ModeSettings({
     // input includes "h" || "m" || "s"
     // convert input back to seconds.
 
-    console.log('rendered');
+    if (Number(inputValue) !== null) {
+      let currentSeconds = Number(inputValue);
 
-    if (
-      inputValue &&
-      timeUnits.some((unit) => inputValue.toString().includes(unit))
-    ) {
-      console.log('input value includes at least one identifier');
+      if (!inputValue || currentSeconds < 60)
+        return `${inputValue || 0} seconds`;
+
+      const secondsInHour = 3600;
+      const secondsInMinute = 60;
+
+      const hours = Math.floor(currentSeconds / secondsInHour);
+
+      currentSeconds %= secondsInHour;
+
+      const minutes = Math.floor(currentSeconds / secondsInMinute);
+
+      currentSeconds %= secondsInMinute;
+
+      const parts: string[] = [];
+
+      if (hours > 0) parts.push(`${hours} hour${hours !== 1 ? 's' : ''}`);
+      if (minutes > 0)
+        parts.push(`${minutes} minute${minutes !== 1 ? 's' : ''}`);
+      if (currentSeconds > 0)
+        parts.push(
+          `${currentSeconds} second${currentSeconds !== 1 ? 's' : ''}`
+        );
+
+      if (parts.length === 1) return parts[0];
+      if (parts.length === 2) return `${parts[0]} and ${parts[1]}`;
+
+      return `${parts[0]}, ${parts[1]} and ${parts[2]}`;
     }
-
-    if (!inputValue || inputValue < 60) return `${inputValue || 0} seconds`;
-
-    const secondsInHour = 3600;
-    const secondsInMinute = 60;
-    let currentSeconds = inputValue;
-
-    const hours = Math.floor(currentSeconds / secondsInHour);
-
-    currentSeconds %= secondsInHour;
-
-    const minutes = Math.floor(currentSeconds / secondsInMinute);
-
-    currentSeconds %= secondsInMinute;
-
-    console.log(hours);
-
-    const parts: string[] = [];
-
-    if (hours > 0) parts.push(`${hours} hour${hours !== 1 ? 's' : ''}`);
-    if (minutes > 0) parts.push(`${minutes} minute${minutes !== 1 ? 's' : ''}`);
-    if (currentSeconds > 0)
-      parts.push(`${currentSeconds} second${currentSeconds !== 1 ? 's' : ''}`);
-
-    if (parts.length === 1) return parts[0];
-    if (parts.length === 2) return `${parts[0]} and ${parts[1]}`;
-    return `${parts[0]}, ${parts[1]} and ${parts[2]}`;
   }
-
-  console.log(convertSecondsToHoursAndMinutes(10000));
 
   const applyCustomValue = () => {
     if (isWordsMode) {
@@ -107,14 +102,16 @@ function ModeSettings({
         <p style={{ color: currentTheme.text.neutral }}>{formattedTime}</p>
       )}
 
-      <NumberInput
+      {/* <NumberInput
         inputRef={inputRef}
         value={value}
         onChange={setValue}
         max={maxValue}
         min={mode === Modes.TIME ? 5 : 1}
         autoFocus
-      />
+      /> */}
+
+      <Input inputRef={inputRef} value={value} onChange={setValue} autoFocus />
 
       <p style={{ color: currentTheme.text.neutral }}>
         {!isWordsMode &&
