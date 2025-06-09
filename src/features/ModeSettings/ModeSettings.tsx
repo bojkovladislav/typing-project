@@ -45,52 +45,85 @@ function ModeSettings({
 
   function convertSecondsToHoursAndMinutes(
     inputValue: string | null | undefined
-  ): string {
-    const timeUnits = ['h', 'm', 's'];
+  ) {
+    const infinity = 'Infinity';
+    const timeUnits = ['h', 'm', 's'] as const;
+    let currentSeconds: number = 0;
+    const result = {
+      seconds: currentSeconds,
+      formattedTime: infinity,
+    };
 
-    // 1h30m
-    // input includes "h" || "m" || "s"
-    // convert input back to seconds.
+    if (!inputValue) return result;
 
-    if (Number(inputValue) !== null) {
-      let currentSeconds = Number(inputValue);
+    const groups = inputValue.match(/\d+[a-zA-Z]?/g) || [];
 
-      if (!inputValue || currentSeconds < 60)
-        return `${inputValue || 0} seconds`;
+    const secondsInHour = 3600;
+    const secondsInMinute = 60;
 
-      const secondsInHour = 3600;
-      const secondsInMinute = 60;
+    const unitToSeconds = {
+      h: (hours: number) => hours * secondsInHour,
+      m: (minutes: number) => minutes * secondsInMinute,
+      s: (seconds: number) => seconds,
+    };
 
-      const hours = Math.floor(currentSeconds / secondsInHour);
+    for (const group of groups) {
+      const groupAsNumber = Number(group);
 
-      currentSeconds %= secondsInHour;
+      if (!isNaN(groupAsNumber)) {
+        currentSeconds += groupAsNumber;
 
-      const minutes = Math.floor(currentSeconds / secondsInMinute);
+        continue;
+      }
 
-      currentSeconds %= secondsInMinute;
+      const currentUnit = group[group.length - 1];
+      const value = parseInt(group);
 
-      const parts: string[] = [];
+      if (timeUnits.some((unit) => unit === currentUnit)) {
+        const secondsFromUnit =
+          unitToSeconds[currentUnit as (typeof timeUnits)[number]](value);
 
-      if (hours > 0) parts.push(`${hours} hour${hours !== 1 ? 's' : ''}`);
-      if (minutes > 0)
-        parts.push(`${minutes} minute${minutes !== 1 ? 's' : ''}`);
-      if (currentSeconds > 0)
-        parts.push(
-          `${currentSeconds} second${currentSeconds !== 1 ? 's' : ''}`
-        );
-
-      if (parts.length === 1) return parts[0];
-      if (parts.length === 2) return `${parts[0]} and ${parts[1]}`;
-
-      return `${parts[0]}, ${parts[1]} and ${parts[2]}`;
+        currentSeconds += secondsFromUnit;
+      } else {
+        currentSeconds += value;
+      }
     }
+
+    result.seconds = currentSeconds;
+
+    const hours = Math.floor(currentSeconds / secondsInHour);
+
+    currentSeconds %= secondsInHour;
+
+    const minutes = Math.floor(currentSeconds / secondsInMinute);
+
+    currentSeconds %= secondsInMinute;
+
+    const parts: string[] = [];
+
+    if (hours > 0) parts.push(`${hours} hour${hours !== 1 ? 's' : ''}`);
+    if (minutes > 0) parts.push(`${minutes} minute${minutes !== 1 ? 's' : ''}`);
+    if (currentSeconds > 0)
+      parts.push(`${currentSeconds} second${currentSeconds !== 1 ? 's' : ''}`);
+
+    if (parts.length === 1) {
+      result.formattedTime = parts[0];
+    } else if (parts.length === 2) {
+      result.formattedTime = `${parts[0]} and ${parts[1]}`;
+    } else {
+      result.formattedTime = `${parts[0]}, ${parts[1]} and ${parts[2]}`;
+    }
+
+    return result;
   }
+
+  console.log(formattedTime);
 
   const applyCustomValue = () => {
     if (isWordsMode) {
       changeOption(Modes.WORDS, 'selectedNumberOfWords', value);
     } else {
-      changeOption(Modes.TIME, 'selectedTimeLimit', value);
+      changeOption(Modes.TIME, 'selectedTimeLimit', formattedTime.seconds);
     }
 
     handleModalClose();
@@ -99,7 +132,9 @@ function ModeSettings({
   return (
     <div className="p-4 flex flex-col gap-3">
       {!isWordsMode && (
-        <p style={{ color: currentTheme.text.neutral }}>{formattedTime}</p>
+        <p style={{ color: currentTheme.text.neutral }}>
+          {formattedTime.formattedTime}
+        </p>
       )}
 
       {/* <NumberInput
