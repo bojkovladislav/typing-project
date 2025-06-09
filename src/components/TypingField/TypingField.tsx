@@ -106,7 +106,12 @@ function TypingField({
   }, [currentMode.additionalOptions, numberOfTypedWords, numberOfWords]);
 
   useEffect(() => {
-    if (currentMode.selectedMode !== Modes.TIME || timer === 0) return;
+    if (
+      currentMode.selectedMode !== Modes.TIME ||
+      timer === 0 ||
+      isTypingTestLocked.current
+    )
+      return;
 
     const timeout = setTimeout(() => {
       setTimer((prevTimer) => Math.max(prevTimer - 1, 0));
@@ -115,7 +120,13 @@ function TypingField({
     return () => {
       clearTimeout(timeout);
     };
-  }, [timer, setTimer, currentMode.selectedMode, currentLetterIndex]);
+  }, [
+    timer,
+    setTimer,
+    currentMode.selectedMode,
+    currentLetterIndex,
+    isTypingTestLocked.current,
+  ]);
 
   useEffect(() => {
     setVisibleCount((prevCount) => {
