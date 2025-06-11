@@ -117,8 +117,6 @@ function ModeSettings({
     return result;
   }
 
-  console.log(formattedTime);
-
   const applyCustomValue = () => {
     if (isWordsMode) {
       changeOption(Modes.WORDS, 'selectedNumberOfWords', value);
@@ -136,15 +134,6 @@ function ModeSettings({
           {formattedTime.formattedTime}
         </p>
       )}
-
-      {/* <NumberInput
-        inputRef={inputRef}
-        value={value}
-        onChange={setValue}
-        max={maxValue}
-        min={mode === Modes.TIME ? 5 : 1}
-        autoFocus
-      /> */}
 
       <Input inputRef={inputRef} value={value} onChange={setValue} autoFocus />
 
