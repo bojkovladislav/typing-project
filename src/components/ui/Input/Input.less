@@ -1,7 +1,7 @@
 .custom-number-input {
   width: 100%;
   border-radius: 8px;
-  background-color: var(--secondary-color);
+  background-color: var(--secondary-color) !important;
   border: 1px solid var(--border-color);
   color: var(--text-color) !important;
 
@@ -29,4 +29,8 @@
   .ant-input-number-handler-wrap {
     display: none;
   }
+}
+
+.custom-number-input .ant-input-number-input {
+  background-color: transparent !important;
 }
