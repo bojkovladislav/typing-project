@@ -4,14 +4,12 @@ export function useTypingTimer(active: boolean) {
   const [currentSecond, setCurrentSecond] = useState(0);
 
   useEffect(() => {
-    const timer = setInterval(() => {
-      setCurrentSecond((prevSecond) => prevSecond + 1);
-    }, 1000);
+    let timer: NodeJS.Timeout;
 
-    if (!active !== null) {
-      clearInterval(timer);
-
-      return;
+    if (active) {
+      timer = setInterval(() => {
+        setCurrentSecond((prevSecond) => prevSecond + 1);
+      }, 1000);
     }
 
     return () => clearInterval(timer);

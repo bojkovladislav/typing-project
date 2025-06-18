@@ -33,7 +33,8 @@ export default function useTyping(): ReturnValues {
   } = useTypingTestLock();
   const { isBlurred, blur } = useBlurControl();
   const { currentSecond, setCurrentSecond } = useTypingTimer(
-    currentLetterIndexRef.current > 0
+    currentLetterIndexRef.current > 0 &&
+      currentLetterIndexRef.current <= text.length
   );
   const { wpmResult, setWpmResult } = useTypingWPM(
     text.length,

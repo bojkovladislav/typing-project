@@ -13,7 +13,7 @@ export function useTypingWPM(
       currentLetterIndexRef.current >= totalChars &&
       wpmResult === null
     ) {
-      const minutesElapsed = currentSecond / 60;
+      const minutesElapsed = currentSecond > 0 ? currentSecond / 60 : 1;
       const WPM = Math.floor(totalChars / 5 / minutesElapsed);
 
       currentLetterIndexRef.current = 0;
