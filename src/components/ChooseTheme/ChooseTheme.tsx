@@ -16,7 +16,7 @@ function ChooseTheme({ action }: Props) {
       hoverEffect
       preventDefault
       additionalStyles={{ color: currentTheme.interface.selectedColor }}
-      customStyles="text-sm outline-none border-none absolute bottom-10 right-10 focus:ring-0 focus:outline-none"
+      customStyles="text-sm outline-none border-none focus:ring-0 focus:outline-none"
       action={action}
       tabIndex={-1}
       icon={<FormatPainterOutlined />}

@@ -6,8 +6,8 @@ function Version() {
   return (
     <p
       style={{ color: currentTheme.interface.selectedColor }}
-      className="text-sm absolute left-10 bottom-10"
-    >{`version 2.0.6 (beta)`}</p>
+      className="text-sm"
+    >{`2.0.6 (beta)`}</p>
   );
 }
 
