@@ -142,7 +142,7 @@ function TypingField({
     <div className="relative" ref={textFieldRef} onClick={unlockTypingTest}>
       {isBlurred && (
         <div
-          className="flex items-center justify-center gap-3 cursor-default center-absolute w-full h-full z-10"
+          className="flex items-center justify-center gap-3 cursor-default center-absolute w-max h-full z-10"
           onClick={() => {
             blur(false);
           }}
